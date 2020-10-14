@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">WhipIt</string>
+    <string name="explore_navigation">Explore</string>
+    <string name="my_recipes_navigation">My recipes</string>
+    <string-array name="recipe_groups">
+        <item>breakfast</item>
+        <item>lunch</item>
+        <item>dinner</item>
+        <item>american</item>
+        <item>italian</item>
+        <item>chinese</item>
+        <item>indian</item>
+        <item>african</item>
+        <item>ketogenic</item>
+        <item>vegetarian</item>
+    </string-array>
+</resources>
