@@ -20,15 +20,15 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 /*
 The adapter that shows all the recipe groups view holders
  */
-public class TopLayerAdapter extends RecyclerView.Adapter<TopLayerAdapter.OnlineRecipeGroupViewHolder> {
-    public class OnlineRecipeGroupViewHolder extends RecyclerView.ViewHolder {
+public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ExploreViewHolder> {
+    public class ExploreViewHolder extends RecyclerView.ViewHolder {
         private TextView recipeGroupText;
         private LinearLayout parentView;
         private RecyclerView recyclerView;
         private ShimmerFrameLayout shimmerFrameLayout;
 
         @RequiresApi(api = Build.VERSION_CODES.N)
-        public OnlineRecipeGroupViewHolder(@NonNull View itemView) {
+        public ExploreViewHolder(@NonNull View itemView) {
             super(itemView);
             // Get recipe group and recycle the string
             String recipeGroup = StringOps.getInstance(itemView).getRecipeGroup();
@@ -55,22 +55,22 @@ public class TopLayerAdapter extends RecyclerView.Adapter<TopLayerAdapter.Online
 
     private View view;
 
-    public TopLayerAdapter(View view) {
+    public ExploreAdapter(View view) {
         this.view = view;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @NonNull
     @Override
-    public OnlineRecipeGroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExploreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_online_recipe, parent, false);
+                .inflate(R.layout.fragment_explore, parent, false);
 
-        return new OnlineRecipeGroupViewHolder(view);
+        return new ExploreViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OnlineRecipeGroupViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExploreViewHolder holder, int position) {
 
     }
 

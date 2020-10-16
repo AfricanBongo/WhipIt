@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".view.fragments.OfflineRecipeFragment"
-    tools:listitem="@layout/fragment_offline_recipe" />
+    tools:context=".view.fragments.MyRecipesFragment"
+    tools:listitem="@layout/fragment_my_recipes" />

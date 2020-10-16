@@ -10,7 +10,7 @@ Recipe that has its information gathered from the spoonacular API (Credits to th
 
 public class OnlineRecipe implements Recipe {
 
-    public Bitmap recipeImage;
+    public boolean saved;
 
     private int id;
     private String title;
@@ -31,7 +31,7 @@ public class OnlineRecipe implements Recipe {
     }
 
     @Override
-    public int getId() {
+    public int getApiId() {
         return id;
     }
 

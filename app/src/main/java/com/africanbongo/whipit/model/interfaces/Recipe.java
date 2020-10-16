@@ -9,5 +9,5 @@ public interface Recipe {
     String getSummary();
     String getSteps();
     String getIngredients();
-    int getId();
+    int getApiId();
 }

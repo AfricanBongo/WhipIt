@@ -14,6 +14,8 @@ Recipe that is saved offline in a room database
 public class OfflineRecipe implements Recipe {
     @PrimaryKey
     public int id;
+    @ColumnInfo
+    public int apiId;
 
     @ColumnInfo
     public String title;
@@ -56,5 +58,14 @@ public class OfflineRecipe implements Recipe {
     @Override
     public String getIngredients() {
         return ingredients;
+    }
+
+    public String getImageURI() {
+        return imageURI;
+    }
+
+    @Override
+    public int getApiId() {
+        return apiId;
     }
 }

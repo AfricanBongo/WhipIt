@@ -11,17 +11,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.whipit.R;
-import com.africanbongo.whipit.view.adapters.TopLayerAdapter;
+import com.africanbongo.whipit.view.adapters.ExploreAdapter;
 
 /**
  * A fragment representing a list of Items.
  */
-public class OnlineRecipeFragment extends Fragment {
+public class ExploreFragment extends Fragment {
+
+    public static ExploreAdapter exploreAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_online_recipe_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_explore_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -30,8 +32,12 @@ public class OnlineRecipeFragment extends Fragment {
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
-            TopLayerAdapter adapter = new TopLayerAdapter(view);
-            recyclerView.setAdapter(adapter);
+
+            if (exploreAdapter == null) {
+                exploreAdapter = new ExploreAdapter(view);
+            }
+
+            recyclerView.setAdapter(exploreAdapter);
         }
         return view;
     }

@@ -4,27 +4,20 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.africanbongo.whipit.R;
-import com.africanbongo.whipit.view.fragments.OfflineRecipeFragment;
-import com.africanbongo.whipit.view.fragments.OnlineRecipeFragment;
+import com.africanbongo.whipit.view.fragments.MyRecipesFragment;
+import com.africanbongo.whipit.view.fragments.ExploreFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navView;
     private static Fragment exploreFragment;
     private static Fragment myRecipesFragment;
+    private static FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +25,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         navView = findViewById(R.id.nav_view);
 
-        // Create new explore fragment if the activity is being launched for the first time
+        // Create new explore fragment and my recipes fragment
+        // If the activity is being launched for the first time
         if (savedInstanceState == null) {
             if (exploreFragment == null) {
-                exploreFragment = new OnlineRecipeFragment();
+                exploreFragment = new ExploreFragment();
             }
+
+            if (myRecipesFragment == null) {
+                myRecipesFragment = new MyRecipesFragment();
+            }
+
+            if (fragmentTransaction == null) {
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            }
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, exploreFragment)
+                    .add(R.id.fragment_container, myRecipesFragment)
+                    .hide(myRecipesFragment)
+                    .show(exploreFragment)
                     .commit();
+
         }
 
         // Set listener methods for the navigation bar menu items
@@ -55,26 +62,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void displayFragment(MenuItem menuItem) {
-        Fragment fragment = null;
+        Fragment fragmentToShow = null;
+        Fragment fragmentToHide = null;
 
         switch(menuItem.getItemId()) {
             case R.id.navigation_explore:
-                if (exploreFragment == null) {
-                    exploreFragment = new OnlineRecipeFragment();
-                }
-                fragment = exploreFragment;
+                fragmentToShow = exploreFragment;
+                fragmentToHide = myRecipesFragment;
                 break;
             case R.id.navigation_my_recipes:
-                if (myRecipesFragment == null) {
-                    myRecipesFragment = new OfflineRecipeFragment();
-                }
-                fragment = myRecipesFragment;
+                fragmentToShow = myRecipesFragment;
+                fragmentToHide = exploreFragment;
                 break;
         }
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .hide(fragmentToHide)
+                .show(fragmentToShow)
                 .commit();
     }
 }
