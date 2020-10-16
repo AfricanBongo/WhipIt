@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,9 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.whipit.R;
 import com.africanbongo.whipit.model.interfaces.RecipeList;
-import com.africanbongo.whipit.model.offline.OfflineRecipeList;
-import com.africanbongo.whipit.model.online.OnlineRecipe;
-import com.africanbongo.whipit.model.online.OnlineRecipeList;
+import com.africanbongo.whipit.model.myrecipe.MyRecipeList;
+import com.africanbongo.whipit.model.explorerecipe.ExploreRecipe;
+import com.africanbongo.whipit.model.explorerecipe.ExploreRecipeList;
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,7 +36,7 @@ public class OnlineRecipeGroupAdapter extends RecyclerView.Adapter<OnlineRecipeG
         private CardView cardView;
         private TextView recipeTitle;
         private ImageView recipeImage;
-        private FloatingActionButton favoriteButton;
+        private FloatingActionButton downloadRecipeButton;
 
         @RequiresApi(api = Build.VERSION_CODES.M)
         public OnlineRecipeViewHolder(@NonNull View itemView) {
@@ -46,32 +45,34 @@ public class OnlineRecipeGroupAdapter extends RecyclerView.Adapter<OnlineRecipeG
             cardView = itemView.findViewById(R.id.recipe_cardview);
             recipeTitle = itemView.findViewById(R.id.text_cardview);
             recipeImage = itemView.findViewById(R.id.image_cardview);
-            recipeImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            favoriteButton = itemView.findViewById(R.id.fab_download);
+            downloadRecipeButton = itemView.findViewById(R.id.fab_download);
 
-            favoriteButton.setOnClickListener(v -> {
-                OnlineRecipe recipe = (OnlineRecipe) cardView.getTag();
+            downloadRecipeButton.setOnClickListener(v -> {
+                ExploreRecipe recipe = (ExploreRecipe) cardView.getTag();
                 Drawable drawable;
                 String toastString;
                 Context context = v.getContext();
 
                 // If the recipe was already downloaded delete it from my recipes
-                if (OfflineRecipeList.getInstance(context).contains(recipe.getApiId())) {
-                    OfflineRecipeList.getInstance(context).deleteRecipe(recipe.getApiId());
+                if (recipe.isSaved()) {
+                    MyRecipeList.getInstance(context).deleteRecipe(recipe.getApiId());
+                    recipe.setSaved(false);
                     // Set icon to download image
                     drawable =  v.getResources().getDrawable(R.drawable.baseline_get_app_24);
                     toastString = "Removing saved recipe";
                 }
                 // Else download recipe
                 else {
-                    OfflineRecipeList.getInstance(context).saveRecipe(recipe);
+                    MyRecipeList.getInstance(context).saveRecipe(recipe);
+                    recipe.setSaved(true);
                     // Set icon to done image
                     drawable = v.getResources().getDrawable(R.drawable.ic_baseline_done_24);
                     toastString = "Saving recipe";
                 }
 
+                // Display a toast and change FAB icon according to recipe state
                 Toast.makeText(context, toastString, Toast.LENGTH_LONG).show();
-                favoriteButton.setImageDrawable(drawable);
+                downloadRecipeButton.setImageDrawable(drawable);
             });
         }
     }
@@ -98,7 +99,7 @@ public class OnlineRecipeGroupAdapter extends RecyclerView.Adapter<OnlineRecipeG
         // Set visibility to be initially gone as shimmer animation displays
         parentView.setVisibility(View.GONE);
 
-        recipeList = new OnlineRecipeList(recipeGroup, this, context);
+        recipeList = new ExploreRecipeList(recipeGroup, this, context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -106,7 +107,7 @@ public class OnlineRecipeGroupAdapter extends RecyclerView.Adapter<OnlineRecipeG
     @Override
     public OnlineRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.online_recipe_card, parent, false);
+                .inflate(R.layout.explore_recipe_card, parent, false);
 
         return new OnlineRecipeViewHolder(view);
     }
@@ -114,16 +115,33 @@ public class OnlineRecipeGroupAdapter extends RecyclerView.Adapter<OnlineRecipeG
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(@NonNull OnlineRecipeViewHolder holder, int position) {
-        OnlineRecipe recipe = (OnlineRecipe) recipeList.getRecipeList().get(position);
+        ExploreRecipe recipe = (ExploreRecipe) recipeList.getRecipeList().get(position);
         holder.cardView.setTag(recipe);
         holder.recipeTitle.setText(recipe.getTitle());
 
         // If the recipe is already saved show a solid favourite button
-        if (OfflineRecipeList.getInstance(context).contains(recipe.getApiId())) {
-            holder.favoriteButton.setForeground(solidFavorite);
+        if (MyRecipeList.getInstance(context).contains(recipe.getApiId())) {
+            holder.downloadRecipeButton.setForeground(solidFavorite);
         } else {
-            holder.favoriteButton.setForeground(borderFavorite);
+            holder.downloadRecipeButton.setForeground(borderFavorite);
         }
+
+        // If the recipe is already saved add a done icon in the download FAB
+        // Else add a download icon
+        Drawable drawable;
+
+        if (recipe.isSaved()) {
+            drawable = holder
+                    .downloadRecipeButton
+                    .getResources()
+                    .getDrawable(R.drawable.ic_baseline_done_24);
+        } else {
+            drawable = holder
+                    .downloadRecipeButton
+                    .getResources()
+                    .getDrawable(R.drawable.baseline_get_app_24);
+        }
+        holder.downloadRecipeButton.setImageDrawable(drawable);
 
         // Try to retrieve the image of the card, apply shimmer animation
         Glide.with(context)

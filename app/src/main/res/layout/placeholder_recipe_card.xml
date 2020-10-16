@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/card_width" android:layout_height="@dimen/card_height" android:layout_margin="5dp"
-    card_view:cardCornerRadius="4dp">
+    android:layout_height="@dimen/parent_to_card_height"
+    android:layout_width="@dimen/parent_to_card_width"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/card_width" android:layout_height="@dimen/card_height"
+        card_view:cardCornerRadius="4dp">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
             <ImageView
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
+                android:scaleType="centerCrop"
                 android:src="@drawable/grey_box_placeholder"
-                android:layout_height="@dimen/imageHeight" />
-
+                android:layout_height="match_parent" />
         </FrameLayout>
-        <TextView
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_margin="5dp" />
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/quicksand_medium"
+        android:textStyle="bold"
+        android:textSize="@dimen/recipe_name_font_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp" />
 
 
-</androidx.cardview.widget.CardView>
+</LinearLayout>

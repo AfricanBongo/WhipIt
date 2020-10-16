@@ -15,15 +15,43 @@ import androidx.fragment.app.FragmentTransaction;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navView;
-    private static Fragment exploreFragment;
-    private static Fragment myRecipesFragment;
+    private static ExploreFragment exploreFragment;
+    private static MyRecipesFragment myRecipesFragment;
     private static FragmentTransaction fragmentTransaction;
+
+    // Text to show on the action bar
+    String actionBarText = null;
+    String exploreBarTitle = null;
+    String myRecipesBarTitle = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navView = findViewById(R.id.nav_view);
+
+        // -------------------------------------------- Action Bar Titles -----------------------------------------------//
+
+        // Emoticon unicode
+        // Face savouring delicious food
+        int sideTongueOutEmoticon = 0x1F60B;
+        // Smiling face with open mouth and cold sweat
+        int oneSweatEmoticon = 0x1F605;
+
+        exploreBarTitle = "Now, what to cook?" + getEmojiByUnicode(oneSweatEmoticon) +
+                getEmojiByUnicode(sideTongueOutEmoticon);
+
+        // Smiling face with heart-shaped eyes emoticon
+        int heartEyesEmoticon = 0x1F60D;
+        // Drooling face emoticon
+        int droolingFaceEmoticon = 0x1F924;
+
+        myRecipesBarTitle = "My delicious collection..." + getEmojiByUnicode(heartEyesEmoticon)
+                + getEmojiByUnicode(droolingFaceEmoticon);
+
+        // -------------------------------------------- Action Bar Titles -----------------------------------------------//
+
+        // -------------------------------------------- Fragments Display ----------------------------------------------- //
 
         // Create new explore fragment and my recipes fragment
         // If the activity is being launched for the first time
@@ -48,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
                     .show(exploreFragment)
                     .commit();
 
+            // Set action bar title
+            actionBarText = exploreBarTitle;
+            setTitle(actionBarText);
+
+            // -------------------------------------------- Fragments Display ----------------------------------------------- //
         }
 
         // Set listener methods for the navigation bar menu items
@@ -69,17 +102,31 @@ public class MainActivity extends AppCompatActivity {
             case R.id.navigation_explore:
                 fragmentToShow = exploreFragment;
                 fragmentToHide = myRecipesFragment;
+                actionBarText = exploreBarTitle;
                 break;
             case R.id.navigation_my_recipes:
                 fragmentToShow = myRecipesFragment;
                 fragmentToHide = exploreFragment;
+                actionBarText = myRecipesBarTitle;
+
+                // Update my recipes adapter
+                myRecipesFragment.updateList();
                 break;
         }
 
+        // Show and hide fragments
         getSupportFragmentManager()
                 .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .hide(fragmentToHide)
                 .show(fragmentToShow)
                 .commit();
+
+        // Change text of action bar
+        setTitle(actionBarText);
+    }
+
+    public static String getEmojiByUnicode(int unicode) {
+        return new String(Character.toChars(unicode));
     }
 }

@@ -18,7 +18,7 @@ import com.africanbongo.whipit.view.adapters.ExploreAdapter;
  */
 public class ExploreFragment extends Fragment {
 
-    public static ExploreAdapter exploreAdapter;
+    private ExploreAdapter exploreAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

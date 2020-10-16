@@ -14,4 +14,6 @@
     <dimen name="parent_to_card_width">@dimen/card_width</dimen>
     <dimen name="card_height">150dp</dimen>
     <dimen name="card_width">150dp</dimen>
+    <dimen name="offline_recipe_image">75dp</dimen>
+    <dimen name="margin_start">3dp</dimen>
 </resources>

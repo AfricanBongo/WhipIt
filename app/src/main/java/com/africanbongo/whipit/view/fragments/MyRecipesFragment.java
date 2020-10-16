@@ -16,9 +16,10 @@ import com.africanbongo.whipit.view.adapters.MyRecipesAdapter;
 /**
  * A fragment representing a list of offline recipes.
  */
+
 public class MyRecipesFragment extends Fragment {
 
-    public static MyRecipesAdapter myRecipesAdapter;
+    private MyRecipesAdapter myRecipesAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,5 +39,18 @@ public class MyRecipesFragment extends Fragment {
             recyclerView.setAdapter(myRecipesAdapter);
         }
         return view;
+    }
+
+    // Update the recipes saved
+    public void updateList() {
+        if (myRecipesAdapter != null) {
+            myRecipesAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        myRecipesAdapter.clearImages();
     }
 }

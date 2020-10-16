@@ -1,4 +1,4 @@
-package com.africanbongo.whipit.model.offline;
+package com.africanbongo.whipit.model.myrecipe;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -10,8 +10,8 @@ import com.africanbongo.whipit.model.interfaces.Recipe;
 Recipe that is saved offline in a room database
  */
 
-@Entity(tableName = "offline_recipes")
-public class OfflineRecipe implements Recipe {
+@Entity(tableName = "my_recipes")
+public class MyRecipe implements Recipe {
     @PrimaryKey
     public int id;
     @ColumnInfo
@@ -21,7 +21,7 @@ public class OfflineRecipe implements Recipe {
     public String title;
 
     @ColumnInfo
-    public String imageURI;
+    public String imageURL;
 
     @ColumnInfo
     public String sourceURL;
@@ -60,8 +60,8 @@ public class OfflineRecipe implements Recipe {
         return ingredients;
     }
 
-    public String getImageURI() {
-        return imageURI;
+    public String getImageURL() {
+        return imageURL;
     }
 
     @Override

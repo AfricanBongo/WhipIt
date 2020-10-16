@@ -1,4 +1,4 @@
-package com.africanbongo.whipit.model.online;
+package com.africanbongo.whipit.model.explorerecipe;
 
 import android.content.Context;
 

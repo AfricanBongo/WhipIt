@@ -1,9 +1,10 @@
-package com.africanbongo.whipit.model.online;
+package com.africanbongo.whipit.model.explorerecipe;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.africanbongo.whipit.model.interfaces.RecipeList;
+import com.africanbongo.whipit.model.myrecipe.MyRecipeList;
 import com.africanbongo.whipit.view.adapters.OnlineRecipeGroupAdapter;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -19,7 +20,7 @@ import java.util.List;
 /*
 Credit for API use to spoonacular for use of their API: https://spoonacular.com/food-api
  */
-public class OnlineRecipeList implements RecipeList {
+public class ExploreRecipeList implements RecipeList {
 
     // Context used when retrieving RecipeRequestQueue
     private Context context;
@@ -28,21 +29,21 @@ public class OnlineRecipeList implements RecipeList {
     public static final String IMAGE_NOT_FOUND = "https://bitsofco.de/content/images/2018/12/broken-1.png";
 
     // Stores the list of online recipes
-    private List<OnlineRecipe> onlineRecipeList;
+    private List<ExploreRecipe> exploreRecipeList;
 
     // Adapter binded to the list
     private OnlineRecipeGroupAdapter boundAdapter;
 
     // Base URL used to grab the specific type of recipes from sp
     public static final String IMPLICIT_RECIPE_GROUPS_URL = "https://api.spoonacular.com/recipes/random?" +
-            "apiKey=ab97a6990e0a441aa7969e73c3c40e3b&number=50&tags=";
+            "apiKey=keyhere&number=50&tags=";
 
     // Explicit group for implicit recipe groups url
     private final String explicitRecipeGroupsURL;
 
-    public OnlineRecipeList(String recipeGroup, OnlineRecipeGroupAdapter boundAdapter, Context context) {
+    public ExploreRecipeList(String recipeGroup, OnlineRecipeGroupAdapter boundAdapter, Context context) {
         this.context = context;
-        onlineRecipeList = new ArrayList<>();
+        exploreRecipeList = new ArrayList<>();
         this.boundAdapter = boundAdapter;
         this.explicitRecipeGroupsURL = IMPLICIT_RECIPE_GROUPS_URL + recipeGroup.toLowerCase();
         loadRecipeInfo();
@@ -98,14 +99,25 @@ public class OnlineRecipeList implements RecipeList {
                         instructionsBuilder.append("Empty");
                     }
 
+                    // Api Id of the recipe
+                    int apiId = recipeObject.getInt("id");
+                    boolean saved;
+
+                    // Check if the recipe is already saved offline in the app
+                    if (MyRecipeList.getInstance(context).contains(apiId)) {
+                        saved = true;
+                    } else {
+                        saved = false;
+                    }
+
                     // Create new recipe object
-                    OnlineRecipe newRecipe = new OnlineRecipe(
-                            recipeObject.getInt("id"), recipeTitle, imageURL, sourceURL, summary,
-                            instructionsBuilder.toString(), ingredientsBuilder.toString()
+                    ExploreRecipe newRecipe = new ExploreRecipe(
+                            apiId, recipeTitle, imageURL, sourceURL, summary,
+                            instructionsBuilder.toString(), ingredientsBuilder.toString(), saved
                             );
 
                     // Add recipe to list
-                    onlineRecipeList.add(newRecipe);
+                    exploreRecipeList.add(newRecipe);
                 }
 
                 // Update data set of bound adapter
@@ -129,7 +141,7 @@ public class OnlineRecipeList implements RecipeList {
         RecipeRequestQueue.getInstance(context).getRequestQueue().add(request);
     }
 
-    public List<OnlineRecipe> getRecipeList() {
-        return onlineRecipeList;
+    public List<ExploreRecipe> getRecipeList() {
+        return exploreRecipeList;
     }
 }
