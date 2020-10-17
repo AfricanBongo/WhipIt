@@ -38,7 +38,6 @@ public class MyRecipe implements Recipe {
     @ColumnInfo
     public String ingredients;
 
-    private Object tag = null;
 
     @Override
     public String getTitle() {
@@ -77,12 +76,12 @@ public class MyRecipe implements Recipe {
     @NonNull
     @Override
     public Object getTag() {
-        return tag;
+        return null;
     }
 
     @NonNull
     @Override
     public void setTag(Object object) {
-        tag = object;
+
     }
 }
