@@ -1,6 +1,7 @@
-package com.africanbongo.whipit.view.adapters;
+package com.africanbongo.whipit.controller.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -18,6 +19,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.whipit.R;
+import com.africanbongo.whipit.controller.activities.DetailActivity;
+import com.africanbongo.whipit.model.RecipeChannel;
+import com.africanbongo.whipit.model.interfaces.Recipe;
 import com.africanbongo.whipit.model.interfaces.RecipeList;
 import com.africanbongo.whipit.model.myrecipe.MyRecipeList;
 import com.africanbongo.whipit.model.explorerecipe.ExploreRecipe;
@@ -31,21 +35,36 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 Shows the recipe card views
  */
 
-public class OnlineRecipeGroupAdapter extends RecyclerView.Adapter<OnlineRecipeGroupAdapter.OnlineRecipeViewHolder> {
-    public class OnlineRecipeViewHolder extends RecyclerView.ViewHolder {
+public class ExploreRecipeGroupAdapter extends RecyclerView.Adapter<ExploreRecipeGroupAdapter.ExploreRecipeViewHolder> {
+    public class ExploreRecipeViewHolder extends RecyclerView.ViewHolder {
         private CardView cardView;
         private TextView recipeTitle;
         private ImageView recipeImage;
         private FloatingActionButton downloadRecipeButton;
 
         @RequiresApi(api = Build.VERSION_CODES.M)
-        public OnlineRecipeViewHolder(@NonNull View itemView) {
+        public ExploreRecipeViewHolder(@NonNull View itemView) {
             super(itemView);
 
             cardView = itemView.findViewById(R.id.recipe_cardview);
             recipeTitle = itemView.findViewById(R.id.text_cardview);
             recipeImage = itemView.findViewById(R.id.image_cardview);
             downloadRecipeButton = itemView.findViewById(R.id.fab_download);
+
+            // When the image is clicked
+            // Open the recipe in the DetailActivity
+            recipeImage.setOnClickListener(v -> {
+                Recipe recipe = (Recipe) cardView.getTag();
+
+                // Send intent to DetailActivity
+                Intent intent = new Intent(v.getContext(), DetailActivity.class);
+
+                // Put recipe in the channel
+                RecipeChannel.getRecipeChannel().putRecipe(recipe);
+
+                // Start DetailActivity
+                v.getContext().startActivity(intent);
+            });
 
             downloadRecipeButton.setOnClickListener(v -> {
                 ExploreRecipe recipe = (ExploreRecipe) cardView.getTag();
@@ -71,7 +90,7 @@ public class OnlineRecipeGroupAdapter extends RecyclerView.Adapter<OnlineRecipeG
                 }
 
                 // Display a toast and change FAB icon according to recipe state
-                Toast.makeText(context, toastString, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, toastString, Toast.LENGTH_SHORT).show();
                 downloadRecipeButton.setImageDrawable(drawable);
             });
         }
@@ -90,8 +109,8 @@ public class OnlineRecipeGroupAdapter extends RecyclerView.Adapter<OnlineRecipeG
     // Data source of the adapter
     private RecipeList recipeList;
 
-    public OnlineRecipeGroupAdapter(Context context, String recipeGroup, ShimmerFrameLayout shimmerFrameLayout,
-                                    LinearLayout linearLayout) {
+    public ExploreRecipeGroupAdapter(Context context, String recipeGroup, ShimmerFrameLayout shimmerFrameLayout,
+                                     LinearLayout linearLayout) {
         this.context = context;
         this.shimmerFrameLayout = shimmerFrameLayout;
         this.parentView = linearLayout;
@@ -105,16 +124,16 @@ public class OnlineRecipeGroupAdapter extends RecyclerView.Adapter<OnlineRecipeG
     @RequiresApi(api = Build.VERSION_CODES.M)
     @NonNull
     @Override
-    public OnlineRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExploreRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.explore_recipe_card, parent, false);
 
-        return new OnlineRecipeViewHolder(view);
+        return new ExploreRecipeViewHolder(view);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void onBindViewHolder(@NonNull OnlineRecipeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExploreRecipeViewHolder holder, int position) {
         ExploreRecipe recipe = (ExploreRecipe) recipeList.getRecipeList().get(position);
         holder.cardView.setTag(recipe);
         holder.recipeTitle.setText(recipe.getTitle());

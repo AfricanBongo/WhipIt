@@ -1,14 +1,15 @@
-package com.africanbongo.whipit.view.activities;
+package com.africanbongo.whipit.controller.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.africanbongo.whipit.R;
-import com.africanbongo.whipit.view.fragments.MyRecipesFragment;
-import com.africanbongo.whipit.view.fragments.ExploreFragment;
+import com.africanbongo.whipit.controller.fragments.MyRecipesFragment;
+import com.africanbongo.whipit.controller.fragments.ExploreFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -29,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navView = findViewById(R.id.nav_view);
+
+        // Add ToolBar to acitivity
+        Toolbar mainToolBar = findViewById(R.id.toolbar_main);
+        setSupportActionBar(mainToolBar);
+
 
         // -------------------------------------------- Action Bar Titles -----------------------------------------------//
 
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Set action bar title
             actionBarText = exploreBarTitle;
-            setTitle(actionBarText);
+            getSupportActionBar().setTitle(actionBarText);
 
             // -------------------------------------------- Fragments Display ----------------------------------------------- //
         }
@@ -123,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
         // Change text of action bar
-        setTitle(actionBarText);
+        getSupportActionBar().setTitle(actionBarText);
     }
 
     public static String getEmojiByUnicode(int unicode) {

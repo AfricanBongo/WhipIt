@@ -1,4 +1,4 @@
-package com.africanbongo.whipit.view.adapters;
+package com.africanbongo.whipit.controller.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

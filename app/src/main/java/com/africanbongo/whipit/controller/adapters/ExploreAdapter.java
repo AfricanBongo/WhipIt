@@ -1,4 +1,4 @@
-package com.africanbongo.whipit.view.adapters;
+package com.africanbongo.whipit.controller.adapters;
 
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -42,7 +42,7 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ExploreV
 
             // Set up the recycler with an adapter to display sub-lists
             recyclerView.setAdapter(
-                    new OnlineRecipeGroupAdapter(itemView.getContext(), recipeGroup,
+                    new ExploreRecipeGroupAdapter(itemView.getContext(), recipeGroup,
                             shimmerFrameLayout, parentView)
             );
 

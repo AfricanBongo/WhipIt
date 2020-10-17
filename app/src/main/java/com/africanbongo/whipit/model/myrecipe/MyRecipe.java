@@ -1,5 +1,8 @@
 package com.africanbongo.whipit.model.myrecipe;
 
+import android.nfc.Tag;
+
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -35,6 +38,8 @@ public class MyRecipe implements Recipe {
     @ColumnInfo
     public String ingredients;
 
+    private Object tag = null;
+
     @Override
     public String getTitle() {
         return title;
@@ -67,5 +72,17 @@ public class MyRecipe implements Recipe {
     @Override
     public int getApiId() {
         return apiId;
+    }
+
+    @NonNull
+    @Override
+    public Object getTag() {
+        return tag;
+    }
+
+    @NonNull
+    @Override
+    public void setTag(Object object) {
+        tag = object;
     }
 }

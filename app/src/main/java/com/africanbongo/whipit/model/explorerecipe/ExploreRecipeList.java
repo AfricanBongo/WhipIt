@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.africanbongo.whipit.model.interfaces.RecipeList;
 import com.africanbongo.whipit.model.myrecipe.MyRecipeList;
-import com.africanbongo.whipit.view.adapters.OnlineRecipeGroupAdapter;
+import com.africanbongo.whipit.controller.adapters.ExploreRecipeGroupAdapter;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -32,16 +32,17 @@ public class ExploreRecipeList implements RecipeList {
     private List<ExploreRecipe> exploreRecipeList;
 
     // Adapter binded to the list
-    private OnlineRecipeGroupAdapter boundAdapter;
+    private ExploreRecipeGroupAdapter boundAdapter;
 
+    private static String apiKey = "38b8d36dd8b54ed090d449516d3e4512";
     // Base URL used to grab the specific type of recipes from sp
     public static final String IMPLICIT_RECIPE_GROUPS_URL = "https://api.spoonacular.com/recipes/random?" +
-            "apiKey=keyhere&number=50&tags=";
+            "apiKey=" + apiKey + "&number=50&tags=";
 
     // Explicit group for implicit recipe groups url
     private final String explicitRecipeGroupsURL;
 
-    public ExploreRecipeList(String recipeGroup, OnlineRecipeGroupAdapter boundAdapter, Context context) {
+    public ExploreRecipeList(String recipeGroup, ExploreRecipeGroupAdapter boundAdapter, Context context) {
         this.context = context;
         exploreRecipeList = new ArrayList<>();
         this.boundAdapter = boundAdapter;
@@ -54,7 +55,6 @@ public class ExploreRecipeList implements RecipeList {
         // Request listener to unpack JSONObject and load recipes
         Response.Listener<JSONObject> listListener = (JSONObject response) -> {
             try {
-
                 // Loop through array creating recipe objects
                 JSONArray recipesArray = response.getJSONArray("recipes");
 

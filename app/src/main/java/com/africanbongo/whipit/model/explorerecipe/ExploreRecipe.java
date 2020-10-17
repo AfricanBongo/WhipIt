@@ -1,5 +1,11 @@
 package com.africanbongo.whipit.model.explorerecipe;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.widget.Button;
+
+import androidx.annotation.NonNull;
+
 import com.africanbongo.whipit.model.interfaces.Recipe;
 
 /*
@@ -17,6 +23,8 @@ public class ExploreRecipe implements Recipe {
     private String summary;
     private String steps;
     private String ingredients;
+
+    private Object tag = null;
 
     public ExploreRecipe(int id, String title, String imageURL, String sourceURL,
                          String summary, String steps, String ingredients, boolean saved) {
@@ -72,5 +80,17 @@ public class ExploreRecipe implements Recipe {
 
     public void setSaved(boolean saved) {
         this.saved = saved;
+    }
+
+    @NonNull
+    @Override
+    public Object getTag() {
+        return tag;
+    }
+
+    @NonNull
+    @Override
+    public void setTag(Object object) {
+        tag = object;
     }
 }

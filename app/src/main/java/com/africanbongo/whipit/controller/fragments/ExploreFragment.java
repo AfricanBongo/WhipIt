@@ -1,4 +1,4 @@
-package com.africanbongo.whipit.view.fragments;
+package com.africanbongo.whipit.controller.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.whipit.R;
-import com.africanbongo.whipit.view.adapters.ExploreAdapter;
+import com.africanbongo.whipit.controller.adapters.ExploreAdapter;
 
 /**
  * A fragment representing a list of Items.
