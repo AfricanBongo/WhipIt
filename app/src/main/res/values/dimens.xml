@@ -10,10 +10,13 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="imageHeight">200dp</dimen>
     <dimen name="imageWidth">200dp</dimen>
-    <dimen name="parent_to_card_height">240dp</dimen>
+    <dimen name="parent_to_card_height">90dp</dimen>
     <dimen name="parent_to_card_width">@dimen/card_width</dimen>
     <dimen name="card_height">150dp</dimen>
     <dimen name="card_width">150dp</dimen>
     <dimen name="offline_recipe_image">75dp</dimen>
-    <dimen name="margin_start">3dp</dimen>
+    <dimen name="margin_start_end">7.5dp</dimen>
+    <dimen name="margin_start_end_detail">10dp</dimen>
+    <dimen name="large_gap_detail">15dp</dimen>
+    <dimen name="small_gap_detail">7.5dp</dimen>
 </resources>

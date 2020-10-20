@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/my_recipes_coordinator" android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.africanbongo.whipit.view.fragments.OfflineRecipeFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginBottom="35dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".controller.fragments.MyRecipesFragment"
-    tools:listitem="@layout/fragment_my_recipes" />
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list"
+        android:name="com.africanbongo.whipit.view.fragments.OfflineRecipeFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".controller.fragments.MyRecipesFragment"
+        tools:listitem="@layout/fragment_my_recipes" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/large_gap_detail"
+        android:layout_marginBottom="@dimen/large_gap_detail"
+        android:src="@drawable/ic_baseline_add_24"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

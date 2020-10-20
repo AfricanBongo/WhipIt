@@ -1,6 +1,7 @@
 package com.africanbongo.whipit.controller.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.whipit.R;
+import com.africanbongo.whipit.controller.activities.DetailActivity;
+import com.africanbongo.whipit.model.RecipeChannel;
+import com.africanbongo.whipit.model.interfaces.Recipe;
 import com.africanbongo.whipit.model.myrecipe.MyRecipe;
 import com.africanbongo.whipit.model.myrecipe.MyRecipeList;
 import com.bumptech.glide.Glide;
@@ -26,6 +30,8 @@ Credit to Glide library for loading images of the app
 
 public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRecipesViewHolder> {
     public class MyRecipesViewHolder extends RecyclerView.ViewHolder {
+        private View foreground;
+        private View background;
         private LinearLayout linearLayout;
         private CardView cardView;
         private ImageView recipeImage;
@@ -38,6 +44,29 @@ public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRe
             cardView = itemView.findViewById(R.id.recipe_cardview_offline);
             recipeImage = itemView.findViewById(R.id.image_cardview_offline);
             recipeTitle = itemView.findViewById(R.id.text_cardview_offline);
+
+            foreground = itemView.findViewById(R.id.foreground);
+            background = itemView.findViewById(R.id.background);
+
+            // Open the recipe in the detail activity
+            linearLayout.setOnClickListener(v -> {
+                Recipe recipe = (Recipe) linearLayout.getTag();
+                Intent intent = new Intent(v.getContext(), DetailActivity.class);
+                RecipeChannel.getRecipeChannel().putRecipe(recipe);
+                v.getContext().startActivity(intent);
+            });
+        }
+
+        public LinearLayout getLinearLayout() {
+            return linearLayout;
+        }
+
+        public View getForeground() {
+            return foreground;
+        }
+
+        public View getBackground() {
+            return background;
         }
     }
 
@@ -76,6 +105,9 @@ public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRe
 
         holder.recipeTitle.setText(recipe.getTitle());
 
+        // Add recipe as tag
+        holder.linearLayout.setTag(recipe);
+
         // Add view holder to the list
         viewHolders.add(holder);
     }
@@ -98,6 +130,7 @@ public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRe
         }
 
     }
+
 
     @Override
     public int getItemViewType(int position) {

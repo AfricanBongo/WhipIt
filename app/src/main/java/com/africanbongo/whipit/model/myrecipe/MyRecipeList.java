@@ -1,18 +1,15 @@
 package com.africanbongo.whipit.model.myrecipe;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.Environment;
-import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.room.Room;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.africanbongo.whipit.model.interfaces.Recipe;
 import com.africanbongo.whipit.model.interfaces.RecipeList;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 /*
@@ -25,12 +22,23 @@ public class MyRecipeList implements RecipeList {
     private Context context;
     private static MyRecipeList instance;
 
+
+    // Migration after adding tag and servings to MyRecipe Object
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE my_recipes"
+            + " ADD COLUMN servings INTEGER DEFAULT 1 not null");
+        }
+    };
+
     private MyRecipeList(Context context) {
         this.context = context;
 
         // Build database
         recipeDatabase = Room
                 .databaseBuilder(context, MyRecipeDatabase.class, "my_recipes")
+                .addMigrations(MIGRATION_1_2)
                 .allowMainThreadQueries()
                 .build();
 
@@ -84,54 +92,31 @@ public class MyRecipeList implements RecipeList {
             myRecipe.summary = recipe.getSummary();
             myRecipe.sourceURL = recipe.getSourceURL();
             myRecipe.imageURL = recipe.getImageURL();
-            // Save the recipe into the Room Database
+            myRecipe.servings = recipe.getServings();
 
+            // Add tag to recipe
+            if (recipe.getTag() != null) {
+                myRecipe.setTag(recipe.getTag());
+            }
+
+            // Save the recipe into the Room Database
             synchronized (recipeDatabase.myRecipeDAO()) {
                 recipeDatabase.myRecipeDAO().saveRecipe(
                         myRecipe.apiId, myRecipe.title, myRecipe.imageURL,
                         myRecipe.sourceURL, myRecipe.summary, myRecipe.steps,
-                        myRecipe.ingredients
+                        myRecipe.ingredients, myRecipe.servings
                 );
             }
-
         }
 
         loadRecipeInfo();
     }
+
     public static MyRecipeList getInstance(Context context) {
         if (instance == null) {
             instance = new MyRecipeList(context);
         }
         return instance;
-    }
-
-    // Used to save image to disk
-    private String saveImage(Bitmap image, Recipe recipe) {
-        String savedImagePath = null;
-        String imageName = recipe.getTitle().replace(" ", "").toLowerCase();
-
-        // Generated storage directory
-        String imageFileName = "JPEG_" + imageName + ".jpg";
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                + "/Pictures/WhipIt");
-        boolean success = true;
-
-        // Create directory if it doesn't exist
-        if (!storageDir.exists()) {
-            success = storageDir.mkdirs();
-        }
-
-        // Save the file to memory
-        if (success) {
-            File imageFile = new File(storageDir, imageFileName);
-            savedImagePath = imageFile.getAbsolutePath();
-            try (OutputStream fOut = new FileOutputStream(imageFile)) {
-                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-            } catch (Exception e) {
-                Log.e("whipit","Error saving recipe image to memory", e);
-            }
-        }
-        return savedImagePath;
     }
 
     public void clearRecipes() {

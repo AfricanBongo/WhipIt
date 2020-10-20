@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_background"
+    android:background="@drawable/my_recipe_card"
+    android:backgroundTint="@android:color/holo_red_light"
+    android:layout_marginTop="@dimen/small_gap_detail"
+    android:layout_marginStart="@dimen/small_gap_detail"
+    android:layout_marginEnd="@dimen/small_gap_detail"
+    android:elevation="@dimen/small_gap_detail"
+    android:layout_width="match_parent" android:layout_height="@dimen/parent_to_card_height"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/delete_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/small_gap_detail"
+        android:src="@drawable/ic_baseline_delete_24" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/small_gap_detail"
+        android:layout_toRightOf="@id/delete_icon"
+        android:text="DELETE"
+        android:textColor="#fff"
+        android:textSize="13dp" />
+</RelativeLayout>

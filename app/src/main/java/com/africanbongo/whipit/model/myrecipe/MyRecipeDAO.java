@@ -7,9 +7,10 @@ import java.util.List;
 
 @Dao
 public interface MyRecipeDAO {
-    @Query("INSERT INTO my_recipes (apiId, title, imageURL, sourceURL, summary, steps, ingredients) VALUES " +
-            "(:apiId, :title, :imageURL, :sourceURL, :summary, :steps, :ingredients)")
-    void saveRecipe(int apiId, String title, String imageURL, String sourceURL, String summary, String steps, String ingredients);
+    @Query("INSERT INTO my_recipes (apiId, title, imageURL, sourceURL, summary, steps, ingredients, servings) VALUES " +
+            "(:apiId, :title, :imageURL, :sourceURL, :summary, :steps, :ingredients, :servings)")
+    void saveRecipe(int apiId, String title, String imageURL, String sourceURL,
+                    String summary, String steps, String ingredients, int servings);
 
     @Query("SELECT * FROM my_recipes")
     List<MyRecipe> getAllMyRecipes();

@@ -1,36 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/my_recipes_layout"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/large_gap_detail"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/recipe_cardview_offline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="@dimen/margin_start"
-            card_view:cardCornerRadius="4dp">
-            <ImageView
-                android:id="@+id/image_cardview_offline"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_width="@dimen/offline_recipe_image"
-                android:src="@drawable/grey_box_placeholder"
-                android:scaleType="centerCrop"
-                android:layout_height="@dimen/offline_recipe_image" />
-        </androidx.cardview.widget.CardView>
+    <!--    Background-->
+    <RelativeLayout
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/text_cardview_offline"
-            android:textColor="@android:color/black"
-            android:fontFamily="@font/quicksand_medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="5dp" />
-</LinearLayout>
+        <include layout="@layout/swipe_to_dismiss_my_recipe_background" />
+    </RelativeLayout>
+
+<!--    Foreground-->
+    <RelativeLayout
+        android:id="@+id/foreground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+
+            android:id="@+id/my_recipes_layout"
+            android:background="@drawable/my_recipe_card"
+            android:layout_marginTop="@dimen/small_gap_detail"
+            android:layout_marginStart="@dimen/small_gap_detail"
+            android:layout_marginEnd="@dimen/small_gap_detail"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/recipe_cardview_offline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_gap_detail"
+                android:layout_marginBottom="@dimen/small_gap_detail"
+                android:layout_marginStart="@dimen/margin_start_end"
+                card_view:cardCornerRadius="@dimen/small_gap_detail">
+                <ImageView
+                    android:id="@+id/image_cardview_offline"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="@dimen/offline_recipe_image"
+                    android:src="@drawable/grey_box_placeholder"
+                    android:scaleType="centerCrop"
+                    android:layout_height="@dimen/offline_recipe_image" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/text_cardview_offline"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/quicksand_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/small_gap_detail" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</FrameLayout>

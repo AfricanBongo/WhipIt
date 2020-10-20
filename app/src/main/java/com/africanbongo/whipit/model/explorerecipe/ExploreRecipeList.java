@@ -3,6 +3,7 @@ package com.africanbongo.whipit.model.explorerecipe;
 import android.content.Context;
 import android.util.Log;
 
+import com.africanbongo.whipit.model.ApiKeys;
 import com.africanbongo.whipit.model.interfaces.RecipeList;
 import com.africanbongo.whipit.model.myrecipe.MyRecipeList;
 import com.africanbongo.whipit.controller.adapters.ExploreRecipeGroupAdapter;
@@ -34,10 +35,9 @@ public class ExploreRecipeList implements RecipeList {
     // Adapter binded to the list
     private ExploreRecipeGroupAdapter boundAdapter;
 
-    private static String apiKey = "38b8d36dd8b54ed090d449516d3e4512";
     // Base URL used to grab the specific type of recipes from sp
     public static final String IMPLICIT_RECIPE_GROUPS_URL = "https://api.spoonacular.com/recipes/random?" +
-            "apiKey=" + apiKey + "&number=50&tags=";
+            "apiKey=" + ApiKeys.firstKey + "&number=50&tags=";
 
     // Explicit group for implicit recipe groups url
     private final String explicitRecipeGroupsURL;
@@ -99,8 +99,9 @@ public class ExploreRecipeList implements RecipeList {
                         instructionsBuilder.append("Empty");
                     }
 
-                    // Api Id of the recipe
+                    // Api Id of the recipe and number of servings for recipe
                     int apiId = recipeObject.getInt("id");
+                    int servings = recipeObject.getInt("servings");
                     boolean saved;
 
                     // Check if the recipe is already saved offline in the app
@@ -113,7 +114,7 @@ public class ExploreRecipeList implements RecipeList {
                     // Create new recipe object
                     ExploreRecipe newRecipe = new ExploreRecipe(
                             apiId, recipeTitle, imageURL, sourceURL, summary,
-                            instructionsBuilder.toString(), ingredientsBuilder.toString(), saved
+                            instructionsBuilder.toString(), ingredientsBuilder.toString(), saved, servings
                             );
 
                     // Add recipe to list

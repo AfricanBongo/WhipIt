@@ -1,9 +1,5 @@
 package com.africanbongo.whipit.model.explorerecipe;
 
-import android.os.Bundle;
-import android.os.Parcel;
-import android.widget.Button;
-
 import androidx.annotation.NonNull;
 
 import com.africanbongo.whipit.model.interfaces.Recipe;
@@ -16,7 +12,8 @@ public class ExploreRecipe implements Recipe {
 
     private boolean saved;
 
-    private int id;
+    private int apiId;
+    private int servings;
     private String title;
     private String imageURL;
     private String sourceURL;
@@ -26,9 +23,9 @@ public class ExploreRecipe implements Recipe {
 
     private Object tag = null;
 
-    public ExploreRecipe(int id, String title, String imageURL, String sourceURL,
-                         String summary, String steps, String ingredients, boolean saved) {
-        this.id = id;
+    public ExploreRecipe(int apiId, String title, String imageURL, String sourceURL,
+                         String summary, String steps, String ingredients, boolean saved, int servings) {
+        this.apiId = apiId;
         this.title = title;
         this.imageURL = imageURL;
         this.sourceURL = sourceURL;
@@ -36,12 +33,13 @@ public class ExploreRecipe implements Recipe {
         this.steps = steps;
         this.ingredients = ingredients;
         this.saved = saved;
+        this.servings = servings;
     }
 
     // Implements methods inherited from the interface
     @Override
     public int getApiId() {
-        return id;
+        return apiId;
     }
 
     @Override
@@ -72,6 +70,11 @@ public class ExploreRecipe implements Recipe {
     @Override
     public String getIngredients() {
         return ingredients;
+    }
+
+    @Override
+    public int getServings() {
+        return servings;
     }
 
     public boolean isSaved() {

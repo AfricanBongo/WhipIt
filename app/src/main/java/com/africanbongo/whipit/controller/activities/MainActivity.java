@@ -2,6 +2,7 @@ package com.africanbongo.whipit.controller.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.africanbongo.whipit.R;
 import com.africanbongo.whipit.controller.fragments.MyRecipesFragment;
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         // Add ToolBar to acitivity
         Toolbar mainToolBar = findViewById(R.id.toolbar_main);
         setSupportActionBar(mainToolBar);
-
 
         // -------------------------------------------- Action Bar Titles -----------------------------------------------//
 

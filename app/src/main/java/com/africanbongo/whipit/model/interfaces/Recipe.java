@@ -15,6 +15,7 @@ public interface Recipe {
     String getSteps();
     String getIngredients();
     String getImageURL();
+    int getServings();
     int getApiId();
 
     // Used passing around objects

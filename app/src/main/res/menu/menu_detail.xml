@@ -4,7 +4,19 @@
     <item android:id="@+id/action_go_to_source"
         android:title="@string/action_sourceURL"
         android:icon="@drawable/baseline_language_24"
-        android:iconTint="@color/colorPrimary"
-        android:orderInCategory="1"
+        android:iconTint="@android:color/white"
+        android:orderInCategory="2"
         app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_share"
+        android:title="@string/share"
+        android:icon="@drawable/ic_baseline_share_24"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="3" />
+    <item android:id="@+id/action_download"
+        android:title="@string/download"
+        android:iconTint="@android:color/white"
+        android:icon="@drawable/baseline_get_app_24"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="1"/>
+
 </menu>

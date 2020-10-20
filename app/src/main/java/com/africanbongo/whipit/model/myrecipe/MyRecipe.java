@@ -5,6 +5,7 @@ import android.nfc.Tag;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.africanbongo.whipit.model.interfaces.Recipe;
@@ -38,6 +39,11 @@ public class MyRecipe implements Recipe {
     @ColumnInfo
     public String ingredients;
 
+    @ColumnInfo
+    public int servings;
+
+    @Ignore
+    private Object tag = null;
 
     @Override
     public String getTitle() {
@@ -60,6 +66,11 @@ public class MyRecipe implements Recipe {
     }
 
     @Override
+    public int getServings() {
+        return servings;
+    }
+
+    @Override
     public String getIngredients() {
         return ingredients;
     }
@@ -76,12 +87,12 @@ public class MyRecipe implements Recipe {
     @NonNull
     @Override
     public Object getTag() {
-        return null;
+        return tag;
     }
 
     @NonNull
     @Override
     public void setTag(Object object) {
-
+        tag = object;
     }
 }
