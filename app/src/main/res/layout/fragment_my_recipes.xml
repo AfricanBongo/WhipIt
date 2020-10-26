@@ -8,13 +8,19 @@
 
     <!--    Background-->
     <RelativeLayout
-        android:id="@+id/background"
+        android:id="@+id/background_delete"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/swipe_to_dismiss_my_recipe_background" />
+        <include layout="@layout/swipe_delete_my_recipe_background" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/background_share"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/swipe_share_my_recipe_background"/>
+    </RelativeLayout>
 <!--    Foreground-->
     <RelativeLayout
         android:id="@+id/foreground"

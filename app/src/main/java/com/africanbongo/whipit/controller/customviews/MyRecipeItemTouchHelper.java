@@ -51,7 +51,20 @@ public abstract class MyRecipeItemTouchHelper extends ItemTouchHelper.SimpleCall
 
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        final View foregroundView = ((MyRecipesAdapter.MyRecipesViewHolder) viewHolder).getForeground();
+        MyRecipesAdapter.MyRecipesViewHolder recipesViewHolder = (MyRecipesAdapter.MyRecipesViewHolder) viewHolder;
+        final View foregroundView = recipesViewHolder.getForeground();
+
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            // When the user swipes right, set background layout to delete
+            // Else set to share
+            if (dX > 0) {
+                recipesViewHolder.getBackgroundShare().setVisibility(View.GONE);
+                recipesViewHolder.getBackgroundDelete().setVisibility(View.VISIBLE);
+            } else if (dX < 0) {
+                recipesViewHolder.getBackgroundDelete().setVisibility(View.GONE);
+                recipesViewHolder.getBackgroundShare().setVisibility(View.VISIBLE);
+            }
+        }
         getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);
     }

@@ -7,5 +7,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".controller.fragments.ExploreFragment"
+    tools:context=".controller.fragments.ExploreRecipeFragment"
     tools:listitem="@layout/fragment_explore" />

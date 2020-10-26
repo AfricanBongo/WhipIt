@@ -1,9 +1,10 @@
 package com.africanbongo.whipit.controller.activities;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
+import androidx.core.app.NavUtils;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -58,7 +59,7 @@ public class DetailActivity extends AppCompatActivity {
 
         servingsTextView = findViewById(R.id.servings);
 
-        summaryTextView = findViewById(R.id.summary);
+        summaryTextView = findViewById(R.id.about);
         stepsLayout = findViewById(R.id.steps_layout);
         ingredientsLayout = findViewById(R.id.ingredients_layout);
 
@@ -79,8 +80,8 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.drawable.grey_box_placeholder)
                 .into(imageView);
 
-
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -122,16 +123,17 @@ public class DetailActivity extends AppCompatActivity {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentRecipe.getSourceURL()));
                 break;
             case R.id.action_share:
-                String shareText = "Hey, I loved this recipe" +
-                        " and I want you to check out this recipe, \"" + currentRecipe.getTitle() +
-                        "\"" + " at:\n" + currentRecipe.getSourceURL();
                 intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, shareText);
+                intent.putExtra(Intent.EXTRA_TEXT, currentRecipe.shareRecipe());
                 break;
             case R.id.action_download:
                 downloadRecipe();
                 break;
+
+            // When back button pressed don't recreate previous activity
+            case android.R.id.home:
+                finish();
         }
 
         if (intent != null) {
@@ -139,7 +141,7 @@ public class DetailActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     // Responds to when the download item is clicked

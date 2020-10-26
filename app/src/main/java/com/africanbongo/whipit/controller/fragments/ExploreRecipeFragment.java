@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,9 +17,13 @@ import com.africanbongo.whipit.controller.adapters.ExploreAdapter;
 /**
  * A fragment representing a list of Items.
  */
-public class ExploreFragment extends Fragment {
+public class ExploreRecipeFragment extends Fragment {
 
     private ExploreAdapter exploreAdapter;
+
+    public ExploreRecipeFragment(@NonNull ExploreAdapter exploreAdapter) {
+        this.exploreAdapter = exploreAdapter;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,11 +37,6 @@ public class ExploreFragment extends Fragment {
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
-
-            if (exploreAdapter == null) {
-                exploreAdapter = new ExploreAdapter(view);
-            }
-
             recyclerView.setAdapter(exploreAdapter);
         }
         return view;

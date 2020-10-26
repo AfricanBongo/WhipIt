@@ -1,14 +1,13 @@
 package com.africanbongo.whipit.controller.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +18,7 @@ import com.africanbongo.whipit.controller.adapters.MyRecipesAdapter;
 import com.africanbongo.whipit.controller.customviews.MyRecipeItemTouchHelper;
 import com.africanbongo.whipit.model.myrecipe.MyRecipe;
 import com.africanbongo.whipit.model.myrecipe.MyRecipeList;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 /**
@@ -34,7 +34,7 @@ public class MyRecipesFragment extends Fragment {
 
     // Callback that allows the user to swipe right to delete a recipe
     MyRecipeItemTouchHelper swipeToDeleteCallback =
-            new MyRecipeItemTouchHelper(0, ItemTouchHelper.RIGHT) {
+            new MyRecipeItemTouchHelper(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             MyRecipesAdapter.MyRecipesViewHolder recipesViewHolder =
@@ -44,27 +44,39 @@ public class MyRecipesFragment extends Fragment {
             // Get the recipe
             MyRecipe recipe = (MyRecipe) recipesViewHolder.getLinearLayout().getTag();
 
-            // Delete directly from storage
-            MyRecipeList.getInstance(context).deleteRecipe(recipe.getApiId());
+            switch (direction) {
+                // Then delete the recipe
+                case ItemTouchHelper.RIGHT:
+                    // Delete directly from storage
+                    MyRecipeList.getInstance(context).deleteRecipe(recipe.getApiId());
+                    // Update the adapter data set
+                    updateList();
+                    // Create the delete text to show in the snackbar
+                    String deleteText = "\"" + recipe.getTitle() + "\"" +
+                            " is being deleted";
+                    // Create snack bar
+                    Snackbar snackbar = Snackbar
+                            .make(getView().findViewById(R.id.my_recipes_coordinator),
+                                    deleteText, Snackbar.LENGTH_SHORT);
+                    // Allow user to undo the deletion
+                    snackbar.setAction("Undo", v -> {
+                        MyRecipeList
+                                .getInstance(getContext())
+                                .saveRecipe(recipe);
+                    });
+                    // Show the snack bar
+                    snackbar.show();
+                    break;
 
-            // Update the adapter data set
-            updateList();
+                // Else share the recipe
+                case ItemTouchHelper.LEFT:
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, recipe.shareRecipe());
+                    startActivity(intent);
+                    break;
+            }
 
-            String deleteText = "\"" + recipe.getTitle() + "\"" +
-                    " is being deleted";
-
-            // Show toast
-            Snackbar snackbar = Snackbar
-                    .make(getView().findViewById(R.id.my_recipes_coordinator),
-                            deleteText, Snackbar.LENGTH_SHORT);
-
-            snackbar.setAction("Undo", v -> {
-                MyRecipeList
-                        .getInstance(getContext())
-                        .saveRecipe(recipe);
-            });
-
-            snackbar.show();
         }
     };
 

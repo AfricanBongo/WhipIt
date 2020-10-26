@@ -10,7 +10,7 @@
     <!--    Collapsing tool bar when viewing a recipe-->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="@dimen/collapsible_toolbar"
         android:orientation="vertical"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -138,7 +138,7 @@
             <!-- Gives a elevation effect-->
             <include
                 layout="@layout/divider_detail"/>
-            <!--    Summary details-->
+            <!--    About/More info details-->
             <LinearLayout
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="vertical" android:layout_marginStart="@dimen/small_gap_detail"
@@ -163,7 +163,7 @@
                     android:background="@drawable/recipe_detail_inner_card"
                     android:orientation="vertical">
                     <TextView
-                        android:id="@+id/summary"
+                        android:id="@+id/about"
                         android:layout_width="wrap_content"
                         android:layout_marginStart="@dimen/margin_start_end"
                         android:layout_marginEnd="@dimen/margin_start_end"

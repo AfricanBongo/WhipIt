@@ -13,9 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controller.activities.DetailActivity"
-            android:configChanges="orientation" android:screenOrientation="portrait"
-            android:parentActivityName=".controller.activities.MainActivity"></activity>
+        <activity
+            android:name=".controller.activities.DetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".controller.activities.MainActivity"
             android:configChanges="orientation"

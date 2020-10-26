@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipe_background"
+    android:id="@+id/swipe_delete_background"
     android:background="@drawable/my_recipe_card"
     android:backgroundTint="@android:color/holo_red_light"
     android:layout_marginTop="@dimen/small_gap_detail"

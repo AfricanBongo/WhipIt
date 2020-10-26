@@ -16,16 +16,21 @@ import com.africanbongo.whipit.R;
 import com.africanbongo.whipit.model.StringOps;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /*
 The adapter that shows all the recipe groups view holders
  */
 public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ExploreViewHolder> {
-    public class ExploreViewHolder extends RecyclerView.ViewHolder {
+    public static class ExploreViewHolder extends RecyclerView.ViewHolder {
         private TextView recipeGroupText;
         private LinearLayout parentView;
         private RecyclerView recyclerView;
         private ShimmerFrameLayout shimmerFrameLayout;
+
+        private static Map<String, ExploreRecipeGroupAdapter> viewHolderMap = new HashMap<>();
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         public ExploreViewHolder(@NonNull View itemView) {
@@ -33,19 +38,26 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ExploreV
             // Get recipe group and recycle the string
             String recipeGroup = StringOps.getInstance(itemView).getRecipeGroup();
 
-            // Set up the views of the view holder
-            parentView = itemView.findViewById(R.id.group_container);
-            recipeGroupText = itemView.findViewById(R.id.group_text);
-            recipeGroupText.setText(recipeGroup);
-            recyclerView = itemView.findViewById(R.id.group_recycleview);
-            shimmerFrameLayout = itemView.findViewById(R.id.shimmer_frame);
+            ExploreRecipeGroupAdapter exploreRecipeGroupAdapter;
 
-            // Set up the recycler with an adapter to display sub-lists
-            recyclerView.setAdapter(
-                    new ExploreRecipeGroupAdapter(itemView.getContext(), recipeGroup,
-                            shimmerFrameLayout, parentView)
-            );
+            // if group adapter already exists, bring it back
+            if (viewHolderMap.containsKey(recipeGroup)) {
+                exploreRecipeGroupAdapter = viewHolderMap.get(recipeGroup);
+            } else {
 
+                // Set up the views of the view holder
+                parentView = itemView.findViewById(R.id.group_container);
+                recipeGroupText = itemView.findViewById(R.id.group_text);
+                recipeGroupText.setText(recipeGroup);
+                recyclerView = itemView.findViewById(R.id.group_recycleview);
+                shimmerFrameLayout = itemView.findViewById(R.id.shimmer_frame);
+
+                exploreRecipeGroupAdapter =
+                        new ExploreRecipeGroupAdapter(itemView.getContext(), recipeGroup,
+                                shimmerFrameLayout, parentView);
+            }
+
+            recyclerView.setAdapter(exploreRecipeGroupAdapter);
             // Configure layout manager and add to recycler view
             LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext());
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

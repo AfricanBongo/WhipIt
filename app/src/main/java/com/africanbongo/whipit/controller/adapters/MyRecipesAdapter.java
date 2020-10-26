@@ -29,111 +29,114 @@ Credit to Glide library for loading images of the app
  */
 
 public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRecipesViewHolder> {
-    public class MyRecipesViewHolder extends RecyclerView.ViewHolder {
-        private View foreground;
-        private View background;
-        private LinearLayout linearLayout;
-        private CardView cardView;
-        private ImageView recipeImage;
-        private TextView recipeTitle;
+  public class MyRecipesViewHolder extends RecyclerView.ViewHolder {
+    private View foreground;
+    private View backgroundDelete;
+    private View backgroundShare;
+    private LinearLayout linearLayout;
+    private CardView cardView;
+    private ImageView recipeImage;
+    private TextView recipeTitle;
 
-        public MyRecipesViewHolder(@NonNull View itemView) {
-            super(itemView);
+    public MyRecipesViewHolder(@NonNull View itemView) {
+      super(itemView);
 
-            linearLayout = itemView.findViewById(R.id.my_recipes_layout);
-            cardView = itemView.findViewById(R.id.recipe_cardview_offline);
-            recipeImage = itemView.findViewById(R.id.image_cardview_offline);
-            recipeTitle = itemView.findViewById(R.id.text_cardview_offline);
+      linearLayout = itemView.findViewById(R.id.my_recipes_layout);
+      cardView = itemView.findViewById(R.id.recipe_cardview_offline);
+      recipeImage = itemView.findViewById(R.id.image_cardview_offline);
+      recipeTitle = itemView.findViewById(R.id.text_cardview_offline);
 
-            foreground = itemView.findViewById(R.id.foreground);
-            background = itemView.findViewById(R.id.background);
+      foreground = itemView.findViewById(R.id.foreground);
+      backgroundDelete = itemView.findViewById(R.id.background_delete);
+      backgroundShare = itemView.findViewById(R.id.background_share);
 
-            // Open the recipe in the detail activity
-            linearLayout.setOnClickListener(v -> {
-                Recipe recipe = (Recipe) linearLayout.getTag();
-                Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                RecipeChannel.getRecipeChannel().putRecipe(recipe);
-                v.getContext().startActivity(intent);
-            });
-        }
-
-        public LinearLayout getLinearLayout() {
-            return linearLayout;
-        }
-
-        public View getForeground() {
-            return foreground;
-        }
-
-        public View getBackground() {
-            return background;
-        }
+      // Open the recipe in the detail activity
+      linearLayout.setOnClickListener(v -> {
+        Recipe recipe = (Recipe) linearLayout.getTag();
+        Intent intent = new Intent(v.getContext(), DetailActivity.class);
+        RecipeChannel.getRecipeChannel().putRecipe(recipe);
+        v.getContext().startActivity(intent);
+      });
     }
 
-    private Context context;
-    private List<MyRecipesViewHolder> viewHolders;
-
-    public MyRecipesAdapter(Context context) {
-        this.context = context;
-        notifyDataSetChanged();
-        viewHolders = new ArrayList<>();
+    public LinearLayout getLinearLayout() {
+      return linearLayout;
     }
 
-    @NonNull
-    @Override
-    public MyRecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater
-                .from(parent.getContext())
-                .inflate(R.layout.fragment_my_recipes, parent, false);
-
-        return new MyRecipesViewHolder(view);
+    public View getForeground() {
+      return foreground;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull MyRecipesViewHolder holder, int position) {
-        MyRecipe recipe = (MyRecipe) MyRecipeList
-                .getInstance(context)
-                .getRecipeList()
-                .get(position);
+    public View getBackgroundDelete() {
+      return backgroundDelete;
+    }
+    public View getBackgroundShare() {return backgroundShare;}
+  }
 
-        // Try to retrieve image from storage
-        Glide
-                .with(context)
-                .load(recipe.getImageURL())
-                .error(context.getDrawable(R.drawable.placeholder))
-                .into(holder.recipeImage);
+  private Context context;
+  private List<MyRecipesViewHolder> viewHolders;
 
-        holder.recipeTitle.setText(recipe.getTitle());
+  public MyRecipesAdapter(Context context) {
+    this.context = context;
+    notifyDataSetChanged();
+    viewHolders = new ArrayList<>();
+  }
 
-        // Add recipe as tag
-        holder.linearLayout.setTag(recipe);
+  @NonNull
+  @Override
+  public MyRecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    View view = LayoutInflater
+            .from(parent.getContext())
+            .inflate(R.layout.fragment_my_recipes, parent, false);
 
-        // Add view holder to the list
-        viewHolders.add(holder);
+    return new MyRecipesViewHolder(view);
+  }
+
+  @Override
+  public void onBindViewHolder(@NonNull MyRecipesViewHolder holder, int position) {
+    MyRecipe recipe = (MyRecipe) MyRecipeList
+            .getInstance(context)
+            .getRecipeList()
+            .get(position);
+
+    // Try to retrieve image from storage
+    Glide
+            .with(context)
+            .load(recipe.getImageURL())
+            .error(context.getDrawable(R.drawable.placeholder))
+            .into(holder.recipeImage);
+
+    holder.recipeTitle.setText(recipe.getTitle());
+
+    // Add recipe as tag
+    holder.linearLayout.setTag(recipe);
+
+    // Add view holder to the list
+    viewHolders.add(holder);
+  }
+
+  @Override
+  public int getItemCount() {
+    return MyRecipeList
+            .getInstance(context)
+            .getRecipeList()
+            .size();
+  }
+
+  // Clear all images in image views when the adapters fragment is destroyed
+  public void clearImages() {
+    if (viewHolders != null) {
+      for (MyRecipesViewHolder viewHolder : viewHolders) {
+        Glide.with(viewHolder.cardView.getContext())
+                .clear(viewHolder.recipeImage);
+      }
     }
 
-    @Override
-    public int getItemCount() {
-        return MyRecipeList
-                .getInstance(context)
-                .getRecipeList()
-                .size();
-    }
-
-    // Clear all images in image views when the adapters fragment is destroyed
-    public void clearImages() {
-        if (viewHolders != null) {
-            for (MyRecipesViewHolder viewHolder : viewHolders) {
-                Glide.with(viewHolder.cardView.getContext())
-                        .clear(viewHolder.recipeImage);
-            }
-        }
-
-    }
+  }
 
 
-    @Override
-    public int getItemViewType(int position) {
-        return super.getItemViewType(position);
-    }
+  @Override
+  public int getItemViewType(int position) {
+    return super.getItemViewType(position);
+  }
 }

@@ -19,4 +19,6 @@
     <dimen name="margin_start_end_detail">10dp</dimen>
     <dimen name="large_gap_detail">15dp</dimen>
     <dimen name="small_gap_detail">7.5dp</dimen>
+    <dimen name="collapsible_toolbar">350dp</dimen>
+    <dimen name="edit_recipe_add_button">12.5dp</dimen>
 </resources>

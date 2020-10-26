@@ -1,7 +1,5 @@
 package com.africanbongo.whipit.model.myrecipe;
 
-import android.nfc.Tag;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -90,9 +88,44 @@ public class MyRecipe implements Recipe {
         return tag;
     }
 
-    @NonNull
     @Override
-    public void setTag(Object object) {
+    public void setTag(@NonNull Object object) {
         tag = object;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setApiId(int apiId) {
+        this.apiId = apiId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public void setSourceURL(String sourceURL) {
+        this.sourceURL = sourceURL;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public void setSteps(String steps) {
+        this.steps = steps;
+    }
+
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
     }
 }

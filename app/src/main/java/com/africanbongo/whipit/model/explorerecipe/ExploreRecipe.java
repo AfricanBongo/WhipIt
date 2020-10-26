@@ -93,7 +93,7 @@ public class ExploreRecipe implements Recipe {
 
     @NonNull
     @Override
-    public void setTag(Object object) {
+    public void setTag(@NonNull Object object) {
         tag = object;
     }
 }

@@ -3,6 +3,7 @@ package com.africanbongo.whipit.model;
 import androidx.annotation.NonNull;
 
 import com.africanbongo.whipit.model.interfaces.Recipe;
+import com.africanbongo.whipit.model.myrecipe.MyRecipe;
 
 /*
 A singleton class used to transfer recipes across activities and fragments
@@ -25,8 +26,7 @@ public class RecipeChannel {
     }
 
     // Put a recipe into the channel
-    @NonNull
-    public void putRecipe(Recipe recipe) {
+    public void putRecipe(@NonNull Recipe recipe) {
         currentRecipe = recipe;
     }
 
@@ -35,5 +35,4 @@ public class RecipeChannel {
     public Recipe getCurrentRecipe() {
         return  currentRecipe;
     }
-
 }

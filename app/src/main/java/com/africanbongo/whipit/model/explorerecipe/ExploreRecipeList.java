@@ -3,7 +3,7 @@ package com.africanbongo.whipit.model.explorerecipe;
 import android.content.Context;
 import android.util.Log;
 
-import com.africanbongo.whipit.model.ApiKeys;
+import com.africanbongo.whipit.model.SpoonacularAPI;
 import com.africanbongo.whipit.model.interfaces.RecipeList;
 import com.africanbongo.whipit.model.myrecipe.MyRecipeList;
 import com.africanbongo.whipit.controller.adapters.ExploreRecipeGroupAdapter;
@@ -35,10 +35,6 @@ public class ExploreRecipeList implements RecipeList {
     // Adapter binded to the list
     private ExploreRecipeGroupAdapter boundAdapter;
 
-    // Base URL used to grab the specific type of recipes from sp
-    public static final String IMPLICIT_RECIPE_GROUPS_URL = "https://api.spoonacular.com/recipes/random?" +
-            "apiKey=" + ApiKeys.firstKey + "&number=50&tags=";
-
     // Explicit group for implicit recipe groups url
     private final String explicitRecipeGroupsURL;
 
@@ -46,7 +42,8 @@ public class ExploreRecipeList implements RecipeList {
         this.context = context;
         exploreRecipeList = new ArrayList<>();
         this.boundAdapter = boundAdapter;
-        this.explicitRecipeGroupsURL = IMPLICIT_RECIPE_GROUPS_URL + recipeGroup.toLowerCase();
+        this.explicitRecipeGroupsURL = SpoonacularAPI.GET_RANDOM_RECIPES_START +
+                SpoonacularAPI.FIRST_KEY + SpoonacularAPI.GET_RANDOM_RECIPES_END + recipeGroup.toLowerCase();
         loadRecipeInfo();
     }
 
