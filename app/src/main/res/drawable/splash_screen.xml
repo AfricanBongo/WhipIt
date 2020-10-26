@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:opacity="opaque">
-    <item android:drawable="@color/colorPrimary"/>
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/whipit_image"/>
-    </item>
+    <item android:drawable="@color/colorPrimary" android:gravity="fill"/>
+    <item android:gravity="center" android:drawable="@drawable/whipit_image"
+        android:height="@dimen/card_height" android:width="@dimen/card_width"/>
 </layer-list>

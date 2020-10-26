@@ -15,7 +15,7 @@ public class SpoonacularAPI {
     public static final String API_KEY_GET = "apiKey=";
 
     // Keys to access api
-    public static final String FIRST_KEY = API_KEY_GET + "ab97a6990e0a441aa7969e73c3c40e3b";
+    public static final String FIRST_KEY = API_KEY_GET + "38b8d36dd8b54ed090d449516d3e4512";
     public static final String SECOND_KEY = null;
     public static final String THIRD_KEY = null;
     public static final String[] keys = new String[] {FIRST_KEY, SECOND_KEY, THIRD_KEY};
