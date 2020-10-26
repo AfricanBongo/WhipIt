@@ -2,6 +2,9 @@ package com.africanbongo.whipit.model.searchrecipe;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.africanbongo.whipit.controller.adapters.SearchRecipeAdapter;
 import com.africanbongo.whipit.model.SpoonacularAPI;
 import com.africanbongo.whipit.model.explorerecipe.RecipeRequestQueue;
 import com.africanbongo.whipit.model.interfaces.Recipe;
@@ -27,7 +30,16 @@ public class SearchRecipeList implements RecipeList {
 
     // Instance
     private static SearchRecipeList instance;
+
+    private SearchRecipeAdapter searchRecipeAdapter;
+
+    // Stores the recipes retrieved from the API
     private List<SearchRecipe> currentSearches;
+
+    // Stores the string for which recipe view holders to load
+    private String recipeResultString = null;
+
+    // Stores the auto complete strings
     private List<String> autocompleteStrings;
     private Context context;
 
@@ -41,6 +53,7 @@ public class SearchRecipeList implements RecipeList {
     }
 
     @Override
+    @NonNull
     public List<? extends Recipe> getRecipeList() {
         if (currentSearches == null) {
             currentSearches = new ArrayList<>();
@@ -94,10 +107,74 @@ public class SearchRecipeList implements RecipeList {
         RecipeRequestQueue.getInstance(context).getRequestQueue().add(request);
     }
 
+
+    // Get recipes as result of user's search
+    public void getRecipesFor(String nameQuery, SearchRecipeAdapter adapter) {
+        recipeResultString = nameQuery.trim();
+
+        searchRecipeAdapter = adapter;
+        // Load recipes from the spoonacular API
+        loadRecipeInfo();
+    }
+
     // Load recipes as results of the search
     @Override
     public void loadRecipeInfo() {
-        currentSearches = new ArrayList<>();
+
+        if (recipeResultString != null && searchRecipeAdapter != null) {
+            currentSearches = new ArrayList<>();
+            synchronized (currentSearches) {
+                // Request listener to fetch recipes from the API
+                Response.Listener<JSONObject> fetchSearchRecipes = (JSONObject response) -> {
+
+                    try {
+
+                        // Parse the results
+                        JSONArray results = response.getJSONArray("results");
+
+                        // Loop through JSONArray creating the SearchRecipe objects
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject result = results.getJSONObject(i);
+
+                            int apiId = result.getInt("id");
+                            String imageURL = result.getString("image");
+                            String title = result.getString("title");
+
+                            // Create new SearchRecipe object
+                            SearchRecipe searchRecipe =
+                                    new SearchRecipe(apiId, title, imageURL, context);
+
+                            currentSearches.add(searchRecipe);
+                        }
+
+                        searchRecipeAdapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        Log.e("whipit", "Error loading search recipes", e);
+                    }
+                };
+
+                // Error listener for a Volley request
+                Response.ErrorListener errorListener =
+                        error -> Log.e("whipit", "recipe list error", error);
+
+                // Create new request for the recipes
+                JsonObjectRequest request = new JsonObjectRequest(
+                        Request.Method.GET,
+                        SpoonacularAPI.GET_RECIPE_INFO_NAME + recipeResultString,
+                        null,
+                        fetchSearchRecipes,
+                        errorListener
+                );
+
+                // Add request to request queue
+                RecipeRequestQueue
+                        .getInstance(context)
+                        .getRequestQueue()
+                        .add(request);
+            }
+
+        }
+
 
     }
 

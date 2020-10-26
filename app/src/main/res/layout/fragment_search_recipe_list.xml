@@ -15,14 +15,21 @@
         app:iconifiedByDefault="false"
         app:queryHint="@string/search_view_hint"
         android:layout_margin="@dimen/large_gap_detail"/>
+
+
+    <TextView
+        android:id="@+id/search_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/large_gap_detail"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"/>
+
     <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/search_recipe_list"
         android:name="com.africanbongo.whipit.controller.fragments.SearchRecipeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context=".controller.fragments.SearchRecipeFragment"
-        tools:listitem="@layout/fragment_search_recipe" />
+        tools:listitem="@layout/fragment_my_recipes" />
 </LinearLayout>

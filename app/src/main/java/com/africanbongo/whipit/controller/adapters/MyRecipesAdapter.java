@@ -19,6 +19,7 @@ import com.africanbongo.whipit.model.RecipeChannel;
 import com.africanbongo.whipit.model.interfaces.Recipe;
 import com.africanbongo.whipit.model.myrecipe.MyRecipe;
 import com.africanbongo.whipit.model.myrecipe.MyRecipeList;
+import com.africanbongo.whipit.model.searchrecipe.SearchRecipe;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -28,8 +29,8 @@ import java.util.List;
 Credit to Glide library for loading images of the app
  */
 
-public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRecipesViewHolder> {
-  public class MyRecipesViewHolder extends RecyclerView.ViewHolder {
+public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.GeneralRecipesViewHolder> {
+  public static class GeneralRecipesViewHolder extends RecyclerView.ViewHolder {
     private View foreground;
     private View backgroundDelete;
     private View backgroundShare;
@@ -38,7 +39,7 @@ public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRe
     private ImageView recipeImage;
     private TextView recipeTitle;
 
-    public MyRecipesViewHolder(@NonNull View itemView) {
+    public GeneralRecipesViewHolder(@NonNull View itemView) {
       super(itemView);
 
       linearLayout = itemView.findViewById(R.id.my_recipes_layout);
@@ -54,6 +55,14 @@ public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRe
       linearLayout.setOnClickListener(v -> {
         Recipe recipe = (Recipe) linearLayout.getTag();
         Intent intent = new Intent(v.getContext(), DetailActivity.class);
+
+        // Load the recipe info of a SearchRecipe
+        if (recipe instanceof SearchRecipe) {
+          if (recipe.getIngredients() == null) {
+              ((SearchRecipe) recipe).loadRecipeInfo();
+          }
+        }
+
         RecipeChannel.getRecipeChannel().putRecipe(recipe);
         v.getContext().startActivity(intent);
       });
@@ -71,10 +80,18 @@ public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRe
       return backgroundDelete;
     }
     public View getBackgroundShare() {return backgroundShare;}
+
+    public ImageView getRecipeImage() {
+      return recipeImage;
+    }
+
+    public TextView getRecipeTitle() {
+      return recipeTitle;
+    }
   }
 
   private Context context;
-  private List<MyRecipesViewHolder> viewHolders;
+  private List<GeneralRecipesViewHolder> viewHolders;
 
   public MyRecipesAdapter(Context context) {
     this.context = context;
@@ -84,16 +101,16 @@ public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRe
 
   @NonNull
   @Override
-  public MyRecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+  public GeneralRecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view = LayoutInflater
             .from(parent.getContext())
             .inflate(R.layout.fragment_my_recipes, parent, false);
 
-    return new MyRecipesViewHolder(view);
+    return new GeneralRecipesViewHolder(view);
   }
 
   @Override
-  public void onBindViewHolder(@NonNull MyRecipesViewHolder holder, int position) {
+  public void onBindViewHolder(@NonNull GeneralRecipesViewHolder holder, int position) {
     MyRecipe recipe = (MyRecipe) MyRecipeList
             .getInstance(context)
             .getRecipeList()
@@ -126,7 +143,7 @@ public class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesAdapter.MyRe
   // Clear all images in image views when the adapters fragment is destroyed
   public void clearImages() {
     if (viewHolders != null) {
-      for (MyRecipesViewHolder viewHolder : viewHolders) {
+      for (GeneralRecipesViewHolder viewHolder : viewHolders) {
         Glide.with(viewHolder.cardView.getContext())
                 .clear(viewHolder.recipeImage);
       }

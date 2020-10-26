@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -63,11 +64,14 @@ public class DetailActivity extends AppCompatActivity {
         stepsLayout = findViewById(R.id.steps_layout);
         ingredientsLayout = findViewById(R.id.ingredients_layout);
 
-        // Fill views with appropriate information
-        servingsTextView.setText("for " + currentRecipe.getServings() + " servings");
-        fillIngredients();
-        fillSummary();
-        fillSteps();
+        synchronized (currentRecipe) {
+            // Fill views with appropriate information
+            servingsTextView.setText("for " + currentRecipe.getServings() + " servings");
+            fillIngredients();
+            fillSummary();
+            fillSteps();
+        }
+
 
         // Set tool bar title to recipe title
         getSupportActionBar().setTitle(currentRecipe.getTitle());

@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.whipit.R;
-import com.africanbongo.whipit.controller.adapters.SearchRecipeRecyclerViewAdapter;
+import com.africanbongo.whipit.controller.adapters.SearchRecipeAdapter;
 import com.africanbongo.whipit.model.searchrecipe.SearchRecipeList;
 
 import java.util.List;
@@ -27,9 +27,15 @@ import java.util.List;
 /**
  * A fragment representing a list of search recipes.
  */
-public class SearchRecipeFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class SearchRecipeFragment extends Fragment implements SearchView.OnQueryTextListener,
+        SearchView.OnSuggestionListener {
 
     private SearchView recipeSearchView;
+    private RecyclerView recyclerView;
+    private TextView resultsTextView;
+
+    // Text for the resultsTextView
+    public static final String RESULTS_FOR = "Search result(s) for: \"";
 
     // Searches for recipes after 3 characters have been entered in the search view
     public static final int SEARCH_QUERY_THRESHOLD = 3;
@@ -49,9 +55,11 @@ public class SearchRecipeFragment extends Fragment implements SearchView.OnQuery
         if (view != null) {
             Context context = view.getContext();
             recipeSearchView = view.findViewById(R.id.recipe_search_view);
-            RecyclerView recyclerView = view.findViewById(R.id.search_recipe_list);
+            recyclerView = view.findViewById(R.id.search_recipe_list);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new SearchRecipeRecyclerViewAdapter(recipeSearchView));
+            recyclerView.setVisibility(View.GONE);
+
+            resultsTextView = view.findViewById(R.id.search_results);
 
             // Set up new suggestions adapter for the search view
             recipeSearchView.setSuggestionsAdapter(new SimpleCursorAdapter(
@@ -62,12 +70,20 @@ public class SearchRecipeFragment extends Fragment implements SearchView.OnQuery
 
             // Set query text listeners for the search view
             recipeSearchView.setOnQueryTextListener(this);
+            recipeSearchView.setOnSuggestionListener(this);
         }
         return view;
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        if (query.trim().length() >= 1) {
+            showRecyclerViewAndLoad(query);
+
+            // Close cursor
+            recipeSearchView.getSuggestionsAdapter().getCursor().close();
+        }
+
         return true;
     }
 
@@ -82,6 +98,33 @@ public class SearchRecipeFragment extends Fragment implements SearchView.OnQuery
 
         return true;
     }
+
+    @Override
+    public boolean onSuggestionSelect(int position) {
+        Cursor cursor = (Cursor) recipeSearchView.getSuggestionsAdapter().getItem(position);
+        String term = cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1));
+        cursor.close();
+
+        showRecyclerViewAndLoad(term);
+
+        return true;
+    }
+
+    @Override
+    public boolean onSuggestionClick(int position) {
+        return onSuggestionSelect(position);
+    }
+
+    // Show the recycler view and load searched recipes
+    public void showRecyclerViewAndLoad(String recipeQuery) {
+
+        String searchResult = RESULTS_FOR + recipeQuery + "\"";
+
+        resultsTextView.setText(searchResult);
+        recyclerView.setAdapter(new SearchRecipeAdapter(recipeQuery, getContext()));
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
 
     public class FetchAutoCompleteStrings extends AsyncTask<String, Void, Cursor> {
 

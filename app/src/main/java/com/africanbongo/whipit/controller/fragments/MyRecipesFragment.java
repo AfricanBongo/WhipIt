@@ -18,7 +18,6 @@ import com.africanbongo.whipit.controller.adapters.MyRecipesAdapter;
 import com.africanbongo.whipit.controller.customviews.MyRecipeItemTouchHelper;
 import com.africanbongo.whipit.model.myrecipe.MyRecipe;
 import com.africanbongo.whipit.model.myrecipe.MyRecipeList;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 /**
@@ -37,8 +36,8 @@ public class MyRecipesFragment extends Fragment {
             new MyRecipeItemTouchHelper(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            MyRecipesAdapter.MyRecipesViewHolder recipesViewHolder =
-                    (MyRecipesAdapter.MyRecipesViewHolder) viewHolder;
+            MyRecipesAdapter.GeneralRecipesViewHolder recipesViewHolder =
+                    (MyRecipesAdapter.GeneralRecipesViewHolder) viewHolder;
 
             Context context = getContext();
             // Get the recipe

@@ -31,7 +31,7 @@ public abstract class MyRecipeItemTouchHelper extends ItemTouchHelper.SimpleCall
     @Override
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
-            final View foregroundView = ((MyRecipesAdapter.MyRecipesViewHolder) viewHolder).getForeground();
+            final View foregroundView = ((MyRecipesAdapter.GeneralRecipesViewHolder) viewHolder).getForeground();
 
             getDefaultUIUtil().onSelected(foregroundView);
         }
@@ -39,19 +39,19 @@ public abstract class MyRecipeItemTouchHelper extends ItemTouchHelper.SimpleCall
 
     @Override
     public void onChildDrawOver(@NonNull Canvas c, @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        final View foregroundView = ((MyRecipesAdapter.MyRecipesViewHolder) viewHolder).getForeground();
+        final View foregroundView = ((MyRecipesAdapter.GeneralRecipesViewHolder) viewHolder).getForeground();
         getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
     }
 
     @Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        final View foregroundView = ((MyRecipesAdapter.MyRecipesViewHolder) viewHolder).getForeground();
+        final View foregroundView = ((MyRecipesAdapter.GeneralRecipesViewHolder) viewHolder).getForeground();
         getDefaultUIUtil().clearView(foregroundView);
     }
 
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        MyRecipesAdapter.MyRecipesViewHolder recipesViewHolder = (MyRecipesAdapter.MyRecipesViewHolder) viewHolder;
+        MyRecipesAdapter.GeneralRecipesViewHolder recipesViewHolder = (MyRecipesAdapter.GeneralRecipesViewHolder) viewHolder;
         final View foregroundView = recipesViewHolder.getForeground();
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {

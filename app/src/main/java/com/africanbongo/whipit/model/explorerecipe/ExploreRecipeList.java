@@ -129,11 +129,13 @@ public class ExploreRecipeList implements RecipeList {
         Response.ErrorListener errorListener = error -> Log.e("whipit", "recipe list error", error);
 
         // Create new request for the recipes
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
                 explicitRecipeGroupsURL,
                 null,
                 listListener,
-                errorListener);
+                errorListener
+        );
 
         // Add to request queue in RecipeRequestQueue singleton class
         RecipeRequestQueue.getInstance(context).getRequestQueue().add(request);

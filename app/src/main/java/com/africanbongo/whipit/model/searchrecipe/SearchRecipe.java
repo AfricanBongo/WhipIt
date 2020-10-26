@@ -1,8 +1,20 @@
 package com.africanbongo.whipit.model.searchrecipe;
 
+import android.content.Context;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.africanbongo.whipit.model.SpoonacularAPI;
+import com.africanbongo.whipit.model.explorerecipe.RecipeRequestQueue;
 import com.africanbongo.whipit.model.interfaces.Recipe;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /*
 Object used when loading recipes from the search tab
@@ -18,10 +30,20 @@ public class SearchRecipe implements Recipe {
     private int servings;
     private int apiId;
 
+    // Used for loading recipes from the internet
+    private static Context context;
 
-    public SearchRecipe(String title, String imageURL) {
+
+    public SearchRecipe(int apiId, String title, String imageURL, Context context) {
+        this.apiId = apiId;
         this.title = title;
         this.imageURL = imageURL;
+
+        if (context == null) {
+            this.context = context;
+        }
+
+        loadRecipeInfo();
     }
 
     @Override
@@ -74,5 +96,80 @@ public class SearchRecipe implements Recipe {
     @Override
     public void setTag(@NonNull Object object) {
 
+    }
+
+    public void loadRecipeInfo() {
+
+        // Response listener to retrieve recipe info
+        Response.Listener<JSONObject> fetchRecipeInfo = (JSONObject response) -> {
+
+            try {
+                // Load strings not within other JSONArrays first
+
+                synchronized (this) {
+                    summary = response.getString("summary");
+                    sourceURL = response.getString("sourceUrl");
+
+                    StringBuilder ingredientsBuilder = new StringBuilder();
+                    StringBuilder instructionsBuilder = new StringBuilder();
+
+                    // Grab ingredients and store as tab separated values string
+                    if (response.optJSONArray("extendedIngredients") != null) {
+                        JSONArray ingredientsArray = response.getJSONArray("extendedIngredients");
+
+                        for (int j = 0; j < ingredientsArray.length(); j++) {
+                            String ingredient = ingredientsArray.getJSONObject(j).getString("originalString");
+                            ingredientsBuilder.append(ingredient + "\t");
+                        }
+                    } else {
+                        ingredientsBuilder.append("Empty");
+                    }
+
+                    // Grab instructions and store as tab separated values string
+                    JSONObject instructionObject = response.getJSONArray("analyzedInstructions")
+                            .optJSONObject(0);
+                    if (instructionObject != null) {
+                        if (instructionObject.optJSONArray("steps") != null) {
+                            JSONArray instructionsArray = instructionObject.getJSONArray("steps");
+
+                            for (int j = 0; j < instructionsArray.length(); j++) {
+                                String instruction = instructionsArray.getJSONObject(j).getString("step");
+                                instructionsBuilder.append(instruction + "\t");
+                            }
+                        }
+                    } else {
+                        instructionsBuilder.append("Empty");
+                    }
+
+                    // Load out ingredients and instructions
+                    ingredients = ingredientsBuilder.toString();
+                    steps = instructionsBuilder.toString();
+
+                    servings = response.getInt("servings");
+                }
+
+            } catch (JSONException e) {
+                Log.e("whipit", "Error loading search recipe info", e);
+            }
+        };
+
+        // Error listener for a Volley request
+        Response.ErrorListener errorListener = error -> Log.e("whipit", "recipe list error", error);
+
+        // Create new request for the recipes
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                SpoonacularAPI.GET_RECIPE_INFO_ID_START + apiId +
+                        SpoonacularAPI.GET_RECIPE_INFO_ID_END,
+                null,
+                fetchRecipeInfo,
+                errorListener
+        );
+
+        // Add to request queue in RecipeRequestQueue singleton class
+        RecipeRequestQueue
+                .getInstance(context)
+                .getRequestQueue()
+                .add(request);
     }
 }
