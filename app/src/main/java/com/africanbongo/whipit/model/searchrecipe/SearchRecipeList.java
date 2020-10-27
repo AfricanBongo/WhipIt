@@ -43,6 +43,9 @@ public class SearchRecipeList implements RecipeList {
     private List<String> autocompleteStrings;
     private Context context;
 
+    // Error listener for a Volley request
+    Response.ErrorListener errorListener;
+
 
     private final String autocompleteQuery = SpoonacularAPI.AUTOCOMPLETE_START +
             SpoonacularAPI.FIRST_KEY + SpoonacularAPI.AUTOCOMPLETE_END;
@@ -110,7 +113,7 @@ public class SearchRecipeList implements RecipeList {
 
     // Get recipes as result of user's search
     public void getRecipesFor(String nameQuery, SearchRecipeAdapter adapter) {
-        recipeResultString = nameQuery.trim();
+        recipeResultString = nameQuery.trim() + "&number=15";
 
         searchRecipeAdapter = adapter;
         // Load recipes from the spoonacular API
@@ -148,13 +151,17 @@ public class SearchRecipeList implements RecipeList {
                         }
 
                         searchRecipeAdapter.notifyDataSetChanged();
+
+                        // Load the remaining information for the recipes
+                        loadForEachSearchRecipe(currentSearches);
+
                     } catch (JSONException e) {
                         Log.e("whipit", "Error loading search recipes", e);
                     }
                 };
 
                 // Error listener for a Volley request
-                Response.ErrorListener errorListener =
+                errorListener =
                         error -> Log.e("whipit", "recipe list error", error);
 
                 // Create new request for the recipes
@@ -175,6 +182,96 @@ public class SearchRecipeList implements RecipeList {
 
         }
 
+
+    }
+
+    // Load information for each search recipe
+    private void loadForEachSearchRecipe(@NonNull List<SearchRecipe> recipes) {
+
+        if (!recipes.isEmpty()) {
+
+            StringBuilder ids = new StringBuilder();
+
+            // First loop getting each recipe's api Id
+            // It's needed for the request url
+            for (SearchRecipe recipe : recipes) {
+
+                // Add comma at the end of the string
+                // As long as it's not the last recipe id
+                if (recipes.indexOf(recipe) != (recipes.size() - 1)) {
+                    ids.append(recipe.getApiId() + ",");
+                } else {
+                    ids.append(recipe.getApiId());
+                }
+            }
+
+            Response.Listener<JSONArray> forEachSearchRecipe = (JSONArray response) -> {
+
+                try {
+
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject recipeObject = response.getJSONObject(i);
+                        SearchRecipe searchRecipe = recipes.get(i);
+
+                        searchRecipe.setSummary(recipeObject.getString("summary"));
+                        searchRecipe.setSourceURL(recipeObject.getString("sourceUrl"));
+
+                        StringBuilder ingredientsBuilder = new StringBuilder();
+                        StringBuilder instructionsBuilder = new StringBuilder();
+
+                        // Grab ingredients and store as tab separated values string
+                        if (recipeObject.optJSONArray("extendedIngredients") != null) {
+                            JSONArray ingredientsArray = recipeObject.getJSONArray("extendedIngredients");
+
+                            for (int j = 0; j < ingredientsArray.length(); j++) {
+                                String ingredient = ingredientsArray.getJSONObject(j).getString("originalString");
+                                ingredientsBuilder.append(ingredient + "\t");
+                            }
+                        } else {
+                            ingredientsBuilder.append("Empty");
+                        }
+
+                        // Grab instructions and store as tab separated values string
+                        JSONObject instructionObject = recipeObject.getJSONArray("analyzedInstructions")
+                                .optJSONObject(0);
+                        if (instructionObject != null) {
+                            if (instructionObject.optJSONArray("steps") != null) {
+                                JSONArray instructionsArray = instructionObject.getJSONArray("steps");
+
+                                for (int j = 0; j < instructionsArray.length(); j++) {
+                                    String instruction = instructionsArray.getJSONObject(j).getString("step");
+                                    instructionsBuilder.append(instruction + "\t");
+                                }
+                            }
+                        } else {
+                            instructionsBuilder.append("Empty");
+                        }
+
+                        // Load out ingredients and instructions
+                        searchRecipe.setIngredients(ingredientsBuilder.toString());
+                        searchRecipe.setSteps(instructionsBuilder.toString());
+
+                        searchRecipe.setServings(recipeObject.getInt("servings"));
+                    }
+                } catch (JSONException e) {
+                    Log.e("whipit", "Failed to load search recipes information", e);
+                }
+            };
+
+            JsonArrayRequest request = new JsonArrayRequest(
+                    Request.Method.GET,
+                    SpoonacularAPI.GET_RECIPE_INFO_BULK + ids,
+                    null,
+                    forEachSearchRecipe,
+                    errorListener
+            );
+
+            // Add to request queue in RecipeRequestQueue singleton class
+            RecipeRequestQueue
+                    .getInstance(context)
+                    .getRequestQueue()
+                    .add(request);
+        }
 
     }
 

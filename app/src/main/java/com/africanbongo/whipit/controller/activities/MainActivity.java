@@ -8,6 +8,7 @@ import com.africanbongo.whipit.controller.adapters.ExploreAdapter;
 import com.africanbongo.whipit.controller.fragments.MyRecipesFragment;
 import com.africanbongo.whipit.controller.fragments.ExploreRecipeFragment;
 import com.africanbongo.whipit.controller.fragments.SearchRecipeFragment;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

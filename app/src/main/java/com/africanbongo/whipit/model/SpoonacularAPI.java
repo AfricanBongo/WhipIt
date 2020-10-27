@@ -15,7 +15,7 @@ public class SpoonacularAPI {
     public static final String API_KEY_GET = "apiKey=";
 
     // Keys to access api
-    public static final String FIRST_KEY = API_KEY_GET + "38b8d36dd8b54ed090d449516d3e4512";
+    public static final String FIRST_KEY = API_KEY_GET + "***************************";
     public static final String SECOND_KEY = null;
     public static final String THIRD_KEY = null;
     public static final String[] keys = new String[] {FIRST_KEY, SECOND_KEY, THIRD_KEY};
@@ -24,6 +24,8 @@ public class SpoonacularAPI {
     public static final String GET_RECIPE_INFO_ID_START = "https://api.spoonacular.com/recipes/";
     public static final String GET_RECIPE_INFO_ID_END = "/information?" + FIRST_KEY;
 
+    public static final String GET_RECIPE_INFO_BULK = "https://api.spoonacular.com/recipes/" +
+            "informationBulk?" + FIRST_KEY + "&ids=";
     // URL used to get recipe information using the recipe name
     public static final String GET_RECIPE_INFO_NAME = "https://api.spoonacular.com/recipes/complexSearch?" +
             FIRST_KEY + "&query=";

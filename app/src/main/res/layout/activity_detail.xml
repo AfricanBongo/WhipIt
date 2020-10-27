@@ -21,6 +21,7 @@
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
             app:expandedTitleGravity="start|bottom"
             app:expandedTitleMarginStart="@dimen/large_gap_detail"
+            app:maxLines="5"
             app:contentScrim="@color/colorPrimary">
 
             <ImageView

@@ -35,7 +35,7 @@ public class SearchRecipeFragment extends Fragment implements SearchView.OnQuery
     private TextView resultsTextView;
 
     // Text for the resultsTextView
-    public static final String RESULTS_FOR = "Search result(s) for: \"";
+    public static final String RESULTS_FOR = "Search result(s) for \"";
 
     // Searches for recipes after 3 characters have been entered in the search view
     public static final int SEARCH_QUERY_THRESHOLD = 3;
@@ -118,7 +118,7 @@ public class SearchRecipeFragment extends Fragment implements SearchView.OnQuery
     // Show the recycler view and load searched recipes
     public void showRecyclerViewAndLoad(String recipeQuery) {
 
-        String searchResult = RESULTS_FOR + recipeQuery + "\"";
+        String searchResult = RESULTS_FOR + recipeQuery + "\":";
 
         resultsTextView.setText(searchResult);
         recyclerView.setAdapter(new SearchRecipeAdapter(recipeQuery, getContext()));

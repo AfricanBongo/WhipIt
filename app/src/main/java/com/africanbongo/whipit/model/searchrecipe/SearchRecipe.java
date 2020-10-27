@@ -42,8 +42,6 @@ public class SearchRecipe implements Recipe {
         if (context == null) {
             this.context = context;
         }
-
-        loadRecipeInfo();
     }
 
     @Override
@@ -98,6 +96,8 @@ public class SearchRecipe implements Recipe {
 
     }
 
+
+    // Only executes when the recipe information wasn't loaded
     public void loadRecipeInfo() {
 
         // Response listener to retrieve recipe info
@@ -171,5 +171,37 @@ public class SearchRecipe implements Recipe {
                 .getInstance(context)
                 .getRequestQueue()
                 .add(request);
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setSourceURL(String sourceURL) {
+        this.sourceURL = sourceURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public void setSteps(String steps) {
+        this.steps = steps;
+    }
+
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
+    }
+
+    public void setApiId(int apiId) {
+        this.apiId = apiId;
     }
 }
