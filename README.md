@@ -21,18 +21,24 @@ Credit to:
 - Scroll sideways to view recipes under a specific category, eg. Vegetarian, Ketogenic
 - Click on a recipe card to view it
 
-![Alt-Text](first_gif.gif)
+
+  <img src="first_gif.gif" width="350" height="750"/>
+
+
 
 ### For "My Recipes" Tab:
 - Scroll down to view more offline recipes
 - Swipe left on recipe card to share recipe and right to delete a recipe
 - Click on a recipe card to view it
 
-![Alt-Text](second_gif.gif)
+
+  <img src="second_gif.gif" width="350" height="750"/>
+
+
 
 ### For "Search" Tab: 
 - Enter a recipe name and choose suggestion if wishes
 - Click on recipe searches to view recipe
 
-![Alt-Text](third_gif.gif)
 
+  <img src="third_gif.gif" width="350" height="750"/>
