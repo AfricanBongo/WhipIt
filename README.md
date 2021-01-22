@@ -42,3 +42,17 @@ Credit to:
 
 
   <img src="third_gif.gif" width="350" height="750"/>
+  
+  
+  
+  
+
+## What I learnt and applied
+- JSON Parsing
+- Volley Library
+- Android Room Library
+- Persistence
+- Activities and Fragments
+- Bottom Navigation Bar
+- RecyclerView and CardView
+- Search functionalities
