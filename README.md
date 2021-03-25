@@ -21,8 +21,9 @@ Credit to:
 - Scroll sideways to view recipes under a specific category, eg. Vegetarian, Ketogenic
 - Click on a recipe card to view it
 
-
+<p align="center">
   <img src="first_gif.gif" width="350" height="750"/>
+</p>
 
 
 
@@ -31,8 +32,10 @@ Credit to:
 - Swipe left on recipe card to share recipe and right to delete a recipe
 - Click on a recipe card to view it
 
-
+<p align="center">
   <img src="second_gif.gif" width="350" height="750"/>
+</p>
+  
 
 
 
@@ -40,11 +43,9 @@ Credit to:
 - Enter a recipe name and choose suggestion if wishes
 - Click on recipe searches to view recipe
 
-
+<p align="center">
   <img src="third_gif.gif" width="350" height="750"/>
-  
-  
-  
+</p>
   
 
 ## What I learnt and applied
