@@ -21,32 +21,32 @@ Credit to:
 - Scroll sideways to view recipes under a specific category, eg. Vegetarian, Ketogenic
 - Click on a recipe card to view it
 
+<br/>
 <p align="center">
   <img src="first_gif.gif" width="350" height="750"/>
 </p>
-
-
+<br/>
 
 ### For "My Recipes" Tab:
 - Scroll down to view more offline recipes
 - Swipe left on recipe card to share recipe and right to delete a recipe
 - Click on a recipe card to view it
 
+<br/>
 <p align="center">
   <img src="second_gif.gif" width="350" height="750"/>
 </p>
-  
-
-
+<br/>
 
 ### For "Search" Tab: 
 - Enter a recipe name and choose suggestion if wishes
 - Click on recipe searches to view recipe
 
+<br/>
 <p align="center">
   <img src="third_gif.gif" width="350" height="750"/>
 </p>
-  
+<br/>
 
 ## What I learnt and applied
 - JSON Parsing
